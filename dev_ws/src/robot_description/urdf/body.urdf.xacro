@@ -1,42 +1,85 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
 
-    <material name="body_front_color">
+    <material name="color_body_front">
         <color rgba="1 0.3 0.1 1"/>
     </material>
 
-    <link name="world"></link>
+    <link name="link_world"></link>
 
-    <link name="base">
+    <link name="link_base">
         <visual>
-            <origin xyz="2 0 0" rpy="1.57 0 0"/>
+            <origin xyz="0 0 -0.142" rpy="1.57 0 0"/>
             <geometry>
                 <box size="5 0.1 3" />
             </geometry>
-            <material name="body_front_color" />
+            <material name="color_body_front" />
         </visual>
     </link>
 
-    <joint name="world_to_base" type="fixed">
-        <parent link="world"/>
-        <child link="base"/>
+    <joint name="link_world_to_link_base_joint" type="fixed">
+        <parent link="link_world"/>
+        <child link="link_base"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <link name="body_front">
+    <link name="link_body_front">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
                 <geometry>
                     <!-- <cylinder radius="0.5" length="1.0"/> -->
                     <mesh filename="package://robot_description/meshes/body_front.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
-            <material name="body_front_color" />
+            <material name="color_body_front" />
         </visual>
     </link>
 
-    <joint name="base_to_body_front" type="fixed">
-        <parent link="base"/>
-        <child link="body_front"/>
-        <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <link name="link_body_rear">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <!-- <cylinder radius="0.5" length="1.0"/> -->
+                    <mesh filename="package://robot_description/meshes/body_rear.stl" scale="1.0 1.0 1.0"/>
+                </geometry>
+            <material name="color_body_front" />
+        </visual>
+    </link>
+
+    <joint name="joint_link_body_front_to_link_body_rear" type="fixed">
+        <parent link="link_body_front"/>
+        <child link="link_body_rear"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </joint>
+
+    <link name="link_window">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_front_window.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+            <material name="color_body_front" />
+        </visual>
+    </link>
+
+    <joint name="joint_link_body_front_to_link_window" type="fixed">
+        <parent link="link_body_front"/>
+        <child link="link_window"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    
+    <xacro:include filename="wheel.urdf.xacro"/>
+    
+    <xacro:wheel roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="0.132" z="-0.041"/>
+    
+    <!-- <joint name="link_body_front_to_link_base" type="fixed">
+        <parent link="link_body_front"/>
+        <child link="link_world_to_link_base"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint> -->
+    
+    <!-- <xacro:wheel_with_joint wheel_name="front_left" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="0.132" z="-0.041"/>
+    <xacro:wheel_with_joint wheel_name="front_right" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="-0.132" z="-0.041"/>
+    <xacro:wheel_with_joint wheel_name="rear_left" roll="1.57" pitch="0.0" yaw="0.0" x="-0.162" y="0.132" z="-0.041"/>
+    <xacro:wheel_with_joint wheel_name="rear_right" roll="1.57" pitch="0.0" yaw="0.0" x="-0.162" y="-0.132" z="-0.041"/>
+ -->
 </robot>
