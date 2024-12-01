@@ -11,13 +11,15 @@ def generate_launch_description():
     package_share_directory = get_package_share_directory('robot_description')
     urdf_xacro_file = os.path.join(package_share_directory, 'urdf', 'body.urdf.xacro')
     
+    urdf_file_content = xacro.process_file(urdf_xacro_file).toxml()
+
     return LaunchDescription([
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[{'robot_description': open(urdf_xacro_file).read()}]
+            parameters=[{'robot_description': urdf_file_content}]
         ),
         Node(
             package='rviz2',
