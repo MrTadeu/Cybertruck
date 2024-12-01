@@ -14,6 +14,7 @@ def generate_launch_description():
     
     urdf_file_content = xacro.process_file(urdf_xacro_file).toxml()
 
+    """ ros2 run joint_state_publisher_gui joint_state_publisher_gui """
     return LaunchDescription([
         Node(
             package='robot_state_publisher',
@@ -23,10 +24,15 @@ def generate_launch_description():
             parameters=[{'robot_description': urdf_file_content}]
         ),
         Node(
+            package='joint_state_publisher_gui',
+            executable='joint_state_publisher_gui',
+            name='joint_state_publisher_gui',
+            output='screen',
+        ),
+        Node(
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
         ),
     ])
-X

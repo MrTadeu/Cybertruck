@@ -22,4 +22,12 @@
         </link>
     </xacro:macro>
 
+    <xacro:macro name="create_wheel_joint" params="wheel_name axis_xyz origin_xyz origin_rpy">
+        <joint name="joint_wheel_body_to_${wheel_name}" type="continuous">
+            <parent link="link_body"/>
+            <child link="link_wheel_${wheel_name}"/>
+            <axis xyz="${axis_xyz}"/>
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+        </joint>
+    </xacro:macro>
 </robot>
