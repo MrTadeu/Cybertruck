@@ -7,10 +7,10 @@ import xacro
 
 def generate_launch_description():
     """ urdf_xacro_file = os.path.join(
-        os.path.dirname(get_package_prefix('robot_description')), '..', 'src', 'robot_description', 'urdf', 'body.urdf.xacro'
+        os.path.dirname(get_package_prefix('robot_description')), '..', 'src', 'robot_description', 'urdf', 'robot.urdf.xacro'
     ) """
     package_share_directory = get_package_share_directory('robot_description')
-    urdf_xacro_file = os.path.join(package_share_directory, 'urdf', 'body.urdf.xacro')
+    urdf_xacro_file = os.path.join(package_share_directory, 'urdf', 'robot.urdf.xacro')
     
     urdf_file_content = xacro.process_file(urdf_xacro_file).toxml()
 
