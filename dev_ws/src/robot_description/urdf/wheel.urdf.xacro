@@ -2,7 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:macro name="wheel" params="diff_name roll pitch yaw x y z">
-        <link name="link_tire_${diff_name}">
+        <link name="link_wheel_${diff_name}">
+            <!-- Mesh para o pneu -->
             <visual>
                 <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
                 <geometry>
@@ -10,9 +11,7 @@
                 </geometry>
                 <material name="color_body_front" />
             </visual>
-        </link>
-
-        <link name="link_rims_${diff_name}">
+            <!-- Mesh para o RIMS -->
             <visual>
                 <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
                 <geometry>
@@ -21,27 +20,6 @@
                 <material name="color_body_front" />
             </visual>
         </link>
-        <joint name="joint_link_rims_to_link_tire" type="fixed">
-            <parent link="link_rims_${diff_name}"/>
-            <child link="link_tire_${diff_name}"/>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-        </joint>
     </xacro:macro>
 
-    <!-- <xacro:wheel diff_name="left" roll="0.0" pitch="1.57" yaw="0.0" x="0.0" y="0.0" z="0.0"/> -->
-
-    
-    
-    <!-- <xacro:wheel roll="0.0" pitch="1.57" yaw="0.0" x="0.0" y="0.0" z="0.0"/> -->
-    <!-- <xacro:macro name="wheel_with_joint" params="wheel_name roll pitch yaw x y z">
-        <xacro:wheel roll="${roll}" pitch="${pitch}" yaw="${yaw}" x="${x}" y="${y}" z="${z}"/>
-
-        <joint name="joint_${wheel_name}" type="continuous">
-            <parent link="base_link"/>
-            <child link="link_tire"/>
-            <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
-        </joint>
-    </xacro:macro> -->
-    <!-- <xacro:wheel_with_joint wheel_name="front_right" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="-0.132" z="-0.041"/> -->
-    
 </robot>
