@@ -26,5 +26,33 @@
             </geometry>
             <material name="color_body_front"/>
         </visual>
+
+        <!-- Body Front -->
+        <collision>
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_front.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+        </collision>
+
+        <!-- Body Rear -->
+        <collision>
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_rear.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+        </collision>
+
+        <!-- Body Window -->
+        <collision>
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_front_window.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+        </collision>
+
+        <!-- Inertial -->
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="10.0"/>
+            <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="0.5"/>
+        </inertial>
     </link>
 </robot>
