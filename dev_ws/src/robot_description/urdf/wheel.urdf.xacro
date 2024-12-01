@@ -1,33 +1,44 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="wheel" params="diff_name roll pitch yaw x y z">
-        <link name="link_wheel_${diff_name}">
-            <!-- Mesh para o pneu -->
+    <!-- Macro for creating wheels with steering -->
+    <xacro:macro name="create_wheel_with_steering" params="wheel_name steering_axis_xyz steering_origin_xyz steering_origin_rpy wheel_axis_xyz wheel_origin_xyz wheel_origin_rpy">
+        <!-- Steering Joint -->
+        <joint name="joint_steering_${wheel_name}" type="revolute">
+            <parent link="link_body"/>
+            <child link="link_steering_${wheel_name}"/>
+            <axis xyz="${steering_axis_xyz}"/>
+            <origin xyz="${steering_origin_xyz}" rpy="${steering_origin_rpy}"/>
+            <limit effort="10.0" velocity="1.0" lower="-0.45" upper="0.45"/>
+        </joint>
+
+        <!-- Steering Link -->
+        <link name="link_steering_${wheel_name}" />
+
+        <!-- Rotational Joint -->
+        <joint name="joint_rotation_${wheel_name}" type="continuous">
+            <parent link="link_steering_${wheel_name}"/>
+            <child link="link_wheel_${wheel_name}"/>
+            <axis xyz="${wheel_axis_xyz}"/>
+            <origin xyz="${wheel_origin_xyz}" rpy="${wheel_origin_rpy}"/>
+        </joint>
+
+        <!-- Wheel Link -->
+        <link name="link_wheel_${wheel_name}">
+            <!-- Tire Mesh -->
             <visual>
-                <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
                 <geometry>
                     <mesh filename="package://robot_description/meshes/tire.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
-                <material name="color_body_front" />
+                <material name="color_body_front"/>
             </visual>
-            <!-- Mesh para o RIMS -->
+            <!-- Rims Mesh -->
             <visual>
-                <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
                 <geometry>
                     <mesh filename="package://robot_description/meshes/rims.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
-                <material name="color_body_front" />
+                <material name="color_body_front"/>
             </visual>
         </link>
-    </xacro:macro>
-
-    <xacro:macro name="create_wheel_joint" params="wheel_name axis_xyz origin_xyz origin_rpy">
-        <joint name="joint_wheel_body_to_${wheel_name}" type="continuous">
-            <parent link="link_body"/>
-            <child link="link_wheel_${wheel_name}"/>
-            <axis xyz="${axis_xyz}"/>
-            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
-        </joint>
     </xacro:macro>
 </robot>

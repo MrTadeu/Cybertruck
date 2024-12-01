@@ -3,30 +3,28 @@
 
     <!-- Main body -->
     <link name="link_body">
-        <!-- Body Front  -->
+        <!-- Body Front -->
         <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-                <geometry>
-                    <mesh filename="package://robot_description/meshes/body_front.stl" scale="1.0 1.0 1.0"/>
-                </geometry>
-            <material name="color_body_front" />
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_front.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+            <material name="color_body_front"/>
         </visual>
+
         <!-- Body Rear -->
         <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-                <geometry>
-                    <mesh filename="package://robot_description/meshes/body_rear.stl" scale="1.0 1.0 1.0"/>
-                </geometry>
-            <material name="color_body_front" />
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_rear.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+            <material name="color_body_front"/>
         </visual>
+
         <!-- Body Window -->
         <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-                <geometry>
-                    <mesh filename="package://robot_description/meshes/body_front_window.stl" scale="1.0 1.0 1.0"/>
-                </geometry>
-            <material name="color_body_front" />
+            <geometry>
+                <mesh filename="package://robot_description/meshes/body_front_window.stl" scale="1.0 1.0 1.0"/>
+            </geometry>
+            <material name="color_body_front"/>
         </visual>
     </link>
-
 </robot>

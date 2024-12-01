@@ -4,7 +4,7 @@
     <material name="color_body_front">
         <color rgba="1 0.3 0.1 1"/>
     </material>
-    
+
     <!-- Root World -->
     <link name="world" />
 
@@ -12,66 +12,58 @@
     <xacro:include filename="wheel.urdf.xacro"/>
     <xacro:include filename="body.urdf.xacro"/>
 
-    <!-- Wheel definitions -->
+    <!-- Wheel offsets -->
+    <xacro:property name="wheel_offset_y" value="0.132"/>
+    <xacro:property name="wheel_offset_z" value="-0.041"/>
+    <xacro:property name="wheel_offset_x_f" value="0.162"/>
+    <xacro:property name="wheel_offset_x_r" value="-0.18"/>
+
     <xacro:property name="wheel_roll" value="1.57"/>
     <xacro:property name="wheel_pitch" value="0.0"/>
     <xacro:property name="wheel_yaw" value="0.0"/>
 
-    <xacro:property name="wheel_offset_y" value="0.132"/>
-    <xacro:property name="wheel_offset_z" value="-0.041"/>
+    <!-- Define wheels with steering -->
+    <xacro:create_wheel_with_steering 
+        wheel_name="front_left" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_f} ${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="${wheel_roll} ${wheel_pitch} ${wheel_yaw}"
+        />
 
-    <xacro:property name="wheel_offset_x_f" value="0.162"/>
-    <xacro:property name="wheel_offset_x_r" value="-0.18"/>
- 
-    <xacro:wheel diff_name="front_left" 
-        roll="${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}"
-        x="0" y="0" z="0"/>
-    <xacro:wheel diff_name="front_right" 
-        roll="-${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}"
-        x="0" y="0" z="0"/>
-    
-    <xacro:wheel diff_name="rear_left" roll="${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}"
-        x="0" y="0" z="0"/>
-    <xacro:wheel diff_name="rear_right" roll="-${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}" 
-        x="0" y="0" z="0"/>
+    <xacro:create_wheel_with_steering 
+        wheel_name="front_right" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_f} -${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="-${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
 
-    <!-- Joints for wheels -->
-    <xacro:create_wheel_joint wheel_name="front_left" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_f} ${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
-    <xacro:create_wheel_joint wheel_name="front_right" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_f} -${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
+    <xacro:create_wheel_with_steering 
+        wheel_name="rear_left" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_r} ${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
 
-    <xacro:create_wheel_joint wheel_name="rear_left" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_r} ${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
-    <xacro:create_wheel_joint wheel_name="rear_right" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_r} -${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
+    <xacro:create_wheel_with_steering 
+        wheel_name="rear_right" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_r} -${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="-${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
 
-    <!-- Joints World -->
+    <!-- Fixed joint to world -->
     <joint name="world_to_link_body" type="fixed">
         <parent link="world"/>
         <child link="link_body"/>
-        <axis xyz="0 0 0"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
-    <!-- <joint name="world_to_wheel_front_left" type="fixed">
-        <parent link="world"/>
-        <child link="link_wheel_front_left"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
-    <joint name="world_to_wheel_front_right" type="fixed">
-        <parent link="world"/>
-        <child link="link_wheel_front_right"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
-
-    <joint name="world_to_wheel_rear_left" type="fixed">
-        <parent link="world"/>
-        <child link="link_wheel_rear_left"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
-    <joint name="world_to_wheel_rear_right" type="fixed">
-        <parent link="world"/>
-        <child link="link_wheel_rear_right"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint> -->
 </robot>
