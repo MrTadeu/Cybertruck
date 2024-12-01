@@ -1,2 +1,5 @@
 cd dev_ws
 colcon build --symlink-install
+
+LIBGL_DEBUG=verbose ros2 run rviz2 rviz2
+ros2 launch robot_description display.launch.py
