@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="wheel" params="diff_name roll pitch yaw x y z">
+        <link name="link_wheel_${diff_name}">
+            <!-- Mesh para o pneu -->
+            <visual>
+                <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
+                <geometry>
+                    <mesh filename="package://robot_description/meshes/tire.stl" scale="1.0 1.0 1.0"/>
+                </geometry>
+                <material name="color_body_front" />
+            </visual>
+            <!-- Mesh para o RIMS -->
+            <visual>
+                <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
+                <geometry>
+                    <mesh filename="package://robot_description/meshes/rims.stl" scale="1.0 1.0 1.0"/>
+                </geometry>
+                <material name="color_body_front" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+</robot>
