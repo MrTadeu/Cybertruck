@@ -13,39 +13,34 @@
     <xacro:include filename="body.urdf.xacro"/>
 
     <!-- Wheel definitions -->
-    <xacro:wheel diff_name="front_left" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="0.132" z="-0.041"/>
-    <xacro:wheel diff_name="front_right" roll="-1.57" pitch="0.0" yaw="0.0" x="0.162" y="-0.132" z="-0.041"/>
-    <xacro:wheel diff_name="rear_left" roll="1.57" pitch="0.0" yaw="0.0" x="-0.18" y="0.132" z="-0.041"/>
-    <xacro:wheel diff_name="rear_right" roll="-1.57" pitch="0.0" yaw="0.0" x="-0.18" y="-0.132" z="-0.041"/>
+    <xacro:property name="wheel_roll" value="1.57"/>
+    <xacro:property name="wheel_pitch" value="0.0"/>
+    <xacro:property name="wheel_yaw" value="0.0"/>
+
+    <xacro:property name="wheel_offset_y" value="0.132"/>
+    <xacro:property name="wheel_offset_z" value="-0.041"/>
+
+    <xacro:property name="wheel_offset_x_f" value="0.162"/>
+    <xacro:property name="wheel_offset_x_r" value="-0.18"/>
+ 
+    <xacro:wheel diff_name="front_left" 
+        roll="${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}"
+        x="0" y="0" z="0"/>
+    <xacro:wheel diff_name="front_right" 
+        roll="-${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}"
+        x="0" y="0" z="0"/>
+    
+    <xacro:wheel diff_name="rear_left" roll="${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}"
+        x="0" y="0" z="0"/>
+    <xacro:wheel diff_name="rear_right" roll="-${wheel_roll}" pitch="${wheel_pitch}" yaw="${wheel_yaw}" 
+        x="0" y="0" z="0"/>
 
     <!-- Joints for wheels -->
-    <joint name="joint_wheel_body_to_front_left" type="continuous">
-        <parent link="link_body"/>
-        <child link="link_wheel_front_left"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0.162 0.132 -0.041" rpy="1.57 0 0"/>
-    </joint>
+    <xacro:create_wheel_joint wheel_name="front_left" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_f} ${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
+    <xacro:create_wheel_joint wheel_name="front_right" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_f} -${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
 
-    <joint name="joint_wheel_body_to_front_right" type="continuous">
-        <parent link="link_body"/>
-        <child link="link_wheel_front_right"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
-
-    <joint name="joint_wheel_body_to_rear_left" type="continuous">
-        <parent link="link_body"/>
-        <child link="link_wheel_rear_left"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
-
-    <joint name="joint_wheel_body_to_rear_right" type="continuous">
-        <parent link="link_body"/>
-        <child link="link_wheel_rear_right"/>
-        <axis xyz="0 0 0"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
+    <xacro:create_wheel_joint wheel_name="rear_left" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_r} ${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
+    <xacro:create_wheel_joint wheel_name="rear_right" axis_xyz="0 0 1" origin_xyz="${wheel_offset_x_r} -${wheel_offset_y} ${wheel_offset_z}" origin_rpy="0 0 0"/>
 
     <!-- Joints World -->
     <joint name="world_to_link_body" type="fixed">
@@ -54,7 +49,7 @@
         <axis xyz="0 0 0"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
-    <joint name="world_to_wheel_front_left" type="fixed">
+    <!-- <joint name="world_to_wheel_front_left" type="fixed">
         <parent link="world"/>
         <child link="link_wheel_front_left"/>
         <axis xyz="0 0 0"/>
@@ -73,11 +68,10 @@
         <axis xyz="0 0 0"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
-
     <joint name="world_to_wheel_rear_right" type="fixed">
         <parent link="world"/>
         <child link="link_wheel_rear_right"/>
         <axis xyz="0 0 0"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
+    </joint> -->
 </robot>
