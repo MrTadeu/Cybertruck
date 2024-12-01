@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+    <xacro:include filename="wheel.urdf.xacro"/>
 
     <material name="color_body_front">
         <color rgba="1 0.3 0.1 1"/>
@@ -7,7 +8,7 @@
 
     <link name="link_world"></link>
 
-    <link name="link_base">
+    <!-- <link name="link_base">
         <visual>
             <origin xyz="0 0 -0.142" rpy="1.57 0 0"/>
             <geometry>
@@ -21,8 +22,13 @@
         <parent link="link_world"/>
         <child link="link_base"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
+    </joint> -->
 
+    <joint name="link_world_to_link_body_front" type="fixed">
+        <parent link="link_world"/>
+        <child link="link_body_front"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
     <link name="link_body_front">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
@@ -67,16 +73,32 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </joint>
     
-    <xacro:include filename="wheel.urdf.xacro"/>
     
-    <xacro:wheel roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="0.132" z="-0.041"/>
-    
-    <!-- <joint name="link_body_front_to_link_base" type="fixed">
+    <xacro:wheel diff_name="front_left" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="0.132" z="-0.041"/>
+    <!-- <xacro:wheel diff_name="front_right" roll="-1.57" pitch="0.0" yaw="0.0" x="0.162" y="-0.132" z="-0.041"/>
+    <xacro:wheel diff_name="back_left" roll="1.57" pitch="0.0" yaw="0.0" x="-0.18" y="0.132" z="-0.041"/>
+    <xacro:wheel diff_name="back_right" roll="-1.57" pitch="0.0" yaw="0.0" x="-0.18" y="-0.132" z="-0.041"/>
+     -->
+    <joint name="joint_whell_body_to_front_left" type="continuous">
         <parent link="link_body_front"/>
-        <child link="link_world_to_link_base"/>
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-    </joint> -->
+        <child link="link_tire_front_left"/>
+        <axis xyz="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="joint_rims_to_body" type="fixed">
+        <parent link="link_body_front"/>
+        <child link="link_rims_front_left"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
     
+    <!-- <joint name="joint_link_body_front_to_link_base" type="fixed">
+        <parent link="link_body_front"/>
+        <child link="link_base"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+     -->
     <!-- <xacro:wheel_with_joint wheel_name="front_left" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="0.132" z="-0.041"/>
     <xacro:wheel_with_joint wheel_name="front_right" roll="1.57" pitch="0.0" yaw="0.0" x="0.162" y="-0.132" z="-0.041"/>
     <xacro:wheel_with_joint wheel_name="rear_left" roll="1.57" pitch="0.0" yaw="0.0" x="-0.162" y="0.132" z="-0.041"/>
