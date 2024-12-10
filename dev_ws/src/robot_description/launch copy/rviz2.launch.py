@@ -7,11 +7,12 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    rsp_launch = IncludeLaunchDescription(
+    # Include robot state publisher launch file
+    rsp = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([
-                FindPackageShare('robot_description'),
-                'launch',
+                FindPackageShare('robot_description'), 
+                'launch', 
                 'rsp.launch.py'
             ])
         ),
@@ -21,13 +22,16 @@ def generate_launch_description():
         }.items()
     )
 
+    # RViz2 node
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
-        output='screen'
+        name='rviz2',
+        output='screen',
     )
 
+    # Launch description
     return LaunchDescription([
-        rsp_launch,
-        rviz_node
+        rsp,
+        rviz_node,
     ])

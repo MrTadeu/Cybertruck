@@ -7,6 +7,13 @@
       <real_time_factor>1</real_time_factor>
     </physics>
     <gui fullscreen="0">
+
+      <plugin name="ros_gz_sim" filename="libignition-gazebo-ros-gz-sim-system.so">
+        <ros>
+          <namespace>/world/house</namespace>
+        </ros>
+      </plugin>
+
       <plugin filename="MinimalScene" name="3D View">
         <gz-gui>
           <title>3D View</title>
@@ -594,4 +601,3 @@
 
   </world>
 </sdf>
-
