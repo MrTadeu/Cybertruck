@@ -1,61 +1,55 @@
 from launch import LaunchDescription
-from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-import os
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
+from launch.event_handlers import OnProcessExit
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
+
 
 def generate_launch_description():
-    package_name = 'robot_description'
+    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
-    # Incluindo o lançamento do rsp
-    rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(
-                get_package_share_directory(package_name), 'launch', 'rsp.launch.py'
-            )
-        ]),
+    # Include robot state publisher (rsp) launch file
+    rsp_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare('robot_description'),
+                'launch',
+                'rsp.launch.py'
+            ])
+        ),
         launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'false'}.items()
     )
 
-    pkg_path = os.path.join(get_package_share_directory(package_name))
-    world_file = os.path.join(pkg_path,'config','house_world.sdf')
-    robot_file = os.path.join(pkg_path,'urdf','robot.urdf.xacro')
-
-    load_world = ExecuteProcess(
-        cmd=['gz', 'sim', world_file],
-        output='screen'
+    # Spawn robot entity in Gazebo
+    gz_spawn_entity = Node(
+        package='ros_gz_sim',
+        executable='create',
+        output='screen',
+        arguments=['-topic', 'robot_description', '-name', 'robot', '-allow_renaming', 'true']
     )
 
-    # Incluindo o lançamento do gz_spawn_model
-    gz_spawn_model = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(
-                get_package_share_directory('ros_gz_sim'), 'launch', 'gz_spawn_model.launch.py'
-            )
-        ]),
-        launch_arguments={
-            'world': 'empty',
-            'file': robot_file,
-            'name': 'my_vehicle',
-            'x': '5.0',
-            'y': '5.0',
-            'z': '0.5',
-        }.items()
-    )
-
-    # Nó para o bridge do Gazebo
+    # Bridge for Gazebo and ROS2
     gazebo_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        name='gz_parameter_bridge',
         output='screen',
-        arguments=['/parameter_bridge'],
+        arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock']
+    )
+
+    # Launch Gazebo environment
+    load_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py'])
+        ),
+        launch_arguments={'gz_args': '-r -v 4 empty.sdf'}.items()
     )
 
     return LaunchDescription([
-        gazebo_bridge,
         rsp,
         load_world,
         gz_spawn_model,
+        gazebo_bridge,
     ])

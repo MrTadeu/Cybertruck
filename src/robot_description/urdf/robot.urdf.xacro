@@ -4,6 +4,6 @@
     <!-- Includes -->
     <xacro:include filename="robot_core.xacro"/>
 
-    <xacro:include filename="gazebo_control.xacro"/>
+    <!-- <xacro:include filename="gazebo_control.xacro"/> -->
 
 </robot>
