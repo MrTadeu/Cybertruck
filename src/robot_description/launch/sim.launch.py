@@ -35,7 +35,7 @@ def generate_launch_description():
             )
         ]),
         launch_arguments={
-            'world': 'house',
+            'world': 'empty',
             'file': robot_file,
             'name': 'my_vehicle',
             'x': '5.0',
@@ -54,8 +54,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        gazebo_bridge,
         rsp,
         load_world,
         gz_spawn_model,
-        gazebo_bridge,
     ])
