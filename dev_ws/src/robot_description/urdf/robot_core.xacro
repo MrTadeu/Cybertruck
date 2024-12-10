@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Material definition -->
+    <material name="color_body_front">
+        <color rgba="1 0.3 0.1 1"/>
+    </material>
+
+    <!-- Root World -->
+    <link name="world" />
+
+    <!-- Includes -->
+    <xacro:include filename="wheel.urdf.xacro"/>
+    <xacro:include filename="body.urdf.xacro"/>
+
+    <!-- Wheel offsets -->
+    <xacro:property name="wheel_offset_y" value="0.132"/>
+    <xacro:property name="wheel_offset_z" value="-0.041"/>
+    <xacro:property name="wheel_offset_x_f" value="0.162"/>
+    <xacro:property name="wheel_offset_x_r" value="-0.18"/>
+
+    <xacro:property name="wheel_roll" value="1.57"/>
+    <xacro:property name="wheel_pitch" value="0.0"/>
+    <xacro:property name="wheel_yaw" value="0.0"/>
+
+    <!-- Define wheels with steering -->
+    <xacro:create_wheel_with_steering 
+        wheel_name="front_left" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_f} ${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="${wheel_roll} ${wheel_pitch} ${wheel_yaw}"
+        />
+
+    <xacro:create_wheel_with_steering 
+        wheel_name="front_right" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_f} -${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="-${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
+
+    <xacro:create_wheel_with_steering 
+        wheel_name="rear_left" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_r} ${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
+
+    <xacro:create_wheel_with_steering 
+        wheel_name="rear_right" 
+        steering_axis_xyz="0 0 1" 
+        steering_origin_xyz="${wheel_offset_x_r} -${wheel_offset_y} ${wheel_offset_z}" 
+        steering_origin_rpy="0 0 0" 
+        wheel_axis_xyz="0 0 1" 
+        wheel_origin_xyz="0 0 0" 
+        wheel_origin_rpy="-${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
+
+    <!-- Fixed joint to world -->
+    <joint name="world_to_link_body" type="fixed">
+        <parent link="world"/>
+        <child link="link_body"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+</robot>
