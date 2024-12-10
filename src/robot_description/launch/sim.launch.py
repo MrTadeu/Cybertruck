@@ -29,7 +29,18 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         output='screen',
-        arguments=['-topic', 'robot_description', '-name', 'robot', '-allow_renaming', 'true']
+        arguments=['-topic', 
+                   'robot_description',
+                   '-x', '0.0',
+                   '-y', '0.0',
+                   '-z', '0.17',
+                   '-R', '0.0',
+                   '-P', '0.0',
+                   '-Y', '0.0',
+                    '-name',
+                    'robot',
+                    '-allow_renaming',
+                    'true']
     )
 
     # Bridge for Gazebo and ROS2

@@ -11,6 +11,12 @@
             <material name="color_body_front"/>
         </visual>
 
+        <!-- <visual>
+            <geometry>
+                <cylinder radius="1" length="5.0"/>
+            </geometry>
+        </visual> -->
+
         <!-- Body Rear -->
         <visual>
             <geometry>
