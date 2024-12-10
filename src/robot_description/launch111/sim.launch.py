@@ -1,3 +1,4 @@
+
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -48,8 +49,13 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        rsp,
-        load_world,
-        gz_spawn_model,
-        gazebo_bridge,
+        rsp_launch,
+        load_gazebo,
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=gz_spawn_entity,
+                on_exit=[gazebo_bridge],
+            )
+        ),
+        gz_spawn_entity
     ])
