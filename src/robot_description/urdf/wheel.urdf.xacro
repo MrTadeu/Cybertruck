@@ -13,8 +13,14 @@
         </joint>
 
         <!-- Steering Link -->
-        <link name="link_steering_${wheel_name}" />
-
+        <link name="link_steering_${wheel_name}">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="1.0"/>
+                <inertia ixx="0.01" iyy="0.01" izz="0.01" ixy="0.0" ixz="0.0" iyz="0.0"/>
+            </inertial>
+        </link>
+        
         <!-- Rotational Joint -->
         <joint name="joint_rotation_${wheel_name}" type="continuous">
             <parent link="link_steering_${wheel_name}"/>
@@ -30,7 +36,7 @@
                 <geometry>
                     <mesh filename="package://robot_description/meshes/tire.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
-                <material name="color_body_front"/>
+                <material name="Black"/>
             </visual>
 
             <!-- Rims Mesh -->
@@ -38,7 +44,7 @@
                 <geometry>
                     <mesh filename="package://robot_description/meshes/rims.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
-                <material name="color_body_front"/>
+                <material name="Black"/>
             </visual>
 
              <!-- Tire Mesh -->

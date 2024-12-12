@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <gazebo>
+    <!-- <gazebo>
         <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
 
             <left_joint>joint_steering_front_left</left_joint>
@@ -14,7 +14,7 @@
             <topic>cmd_vel</topic>
         </plugin>
     </gazebo>
-
+ -->
     <!-- Gazebo Body Ref -->
     <gazebo reference="link_body">
         <material>Gazebo/Grey</material>

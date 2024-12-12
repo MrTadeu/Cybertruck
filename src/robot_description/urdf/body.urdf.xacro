@@ -8,7 +8,7 @@
             <geometry>
                 <mesh filename="package://robot_description/meshes/body_front.stl" scale="1.0 1.0 1.0"/>
             </geometry>
-            <material name="color_body_front"/>
+            <material name="Grey"/>
         </visual>
 
         <!-- <visual>
@@ -22,7 +22,7 @@
             <geometry>
                 <mesh filename="package://robot_description/meshes/body_rear.stl" scale="1.0 1.0 1.0"/>
             </geometry>
-            <material name="color_body_front"/>
+            <material name="Grey"/>
         </visual>
 
         <!-- Body Window -->
@@ -30,7 +30,7 @@
             <geometry>
                 <mesh filename="package://robot_description/meshes/body_front_window.stl" scale="1.0 1.0 1.0"/>
             </geometry>
-            <material name="color_body_front"/>
+            <material name="Black"/>
         </visual>
 
         <!-- Body Front -->
@@ -56,9 +56,9 @@
 
         <!-- Inertial -->
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="10.0"/>
-            <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="0.5"/>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="1.0" />
+            <inertia ixx="0.126164" ixy="0.0" ixz="0.0" iyy="0.416519" iyz="0.0" izz="0.481014" />
         </inertial>
     </link>
 

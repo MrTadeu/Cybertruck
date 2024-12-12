@@ -1,12 +1,21 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- Material definition -->
-    <material name="color_body_front">
-        <color rgba="1 0.3 0.1 1"/>
+    <material name="Black">
+        <color rgba="0 0 0 1" />
+    </material>
+    <material name="Grey">
+        <color rgba="0.8 0.8 0.8 1" />
+    </material>
+    <material name="Orange">
+        <color rgba="1 0.6 0 1" />
+    </material>
+    <material name="White">
+        <color rgba="1 1 1 1" />
     </material>
 
-    <!-- Root World -->
-    <link name="world" />
+    <!-- Root link_base -->
+    <link name="link_base" />
 
     <!-- Includes -->
     <xacro:include filename="wheel.urdf.xacro"/>
@@ -60,9 +69,9 @@
         wheel_origin_xyz="0 0 0" 
         wheel_origin_rpy="-${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
 
-    <!-- Fixed joint to world -->
-    <joint name="world_to_link_body" type="fixed">
-        <parent link="world"/>
+    <!-- Fixed joint to link_base -->
+    <joint name="link_base_to_link_body" type="fixed">
+        <parent link="link_base"/>
         <child link="link_body"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
