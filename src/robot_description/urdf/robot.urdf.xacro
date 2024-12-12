@@ -1,9 +1,16 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
 
-    <!-- Includes -->
+    <!-- Robot Description -->
     <xacro:include filename="robot_core.xacro"/>
 
-    <!-- <xacro:include filename="gazebo_control.xacro"/> -->
+    <!-- Gazebo Control -->
+    <xacro:if value="$(arg use_gazebo_ros2_control)">
+        <xacro:include filename="gazebo_control.xacro" />
+    </xacro:if>
 
+    <!-- ROS Control -->
+    <xacro:include filename="ros2_control.xacro"/>
+    
+    
 </robot>

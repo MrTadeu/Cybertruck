@@ -1,4 +1,4 @@
-
+# ros2 launch robot_sim sim.launch.py use_gazebo_ros2_control:=true use_sim_time:=true
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -11,6 +11,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    use_gazebo_ros2_control = LaunchConfiguration('use_gazebo_ros2_control', default='false')
 
     # Include robot state publisher (rsp) launch file
     rsp_launch = IncludeLaunchDescription(
@@ -21,7 +22,7 @@ def generate_launch_description():
                 'rsp.launch.py'
             ])
         ),
-        launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'false'}.items()
+        launch_arguments={'use_sim_time': use_sim_time, 'use_gazebo_ros2_control': use_gazebo_ros2_control}.items()
     )
 
     # Spawn robot entity in Gazebo
@@ -60,6 +61,16 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'use_gazebo_ros2_control',
+            default_value='true',
+            description='Enable ROS 2 control if true'
+        ),
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='true',
+            description='Use simulation time if true'
+        ),
         rsp_launch,
         load_gazebo,
         RegisterEventHandler(

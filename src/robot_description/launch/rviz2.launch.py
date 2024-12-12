@@ -18,7 +18,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             'use_sim_time': 'true',
-            'use_ros2_control': 'false'
+            'use_gazebo_ros2_control': 'false'
         }.items()
     )
 

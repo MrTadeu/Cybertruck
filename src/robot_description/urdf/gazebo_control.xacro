@@ -1,43 +1,31 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- <gazebo>
-        <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
-
-            <left_joint>joint_steering_front_left</left_joint>
-            <right_joint>joint_steering_right_left</right_joint>
-
-            <wheel_separation>1.2</wheel_separation>
-            <wheel_radius>0.4</wheel_radius>
-
-            <odom_publish_frequency>1</odom_publish_frequency>
-            <topic>cmd_vel</topic>
+    <!-- Gazebo Plugin -->
+    <gazebo>
+        <plugin name="gz_ros2_control-system" filename="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(find robot_description)/config/robot_sim.controller_manager.yaml</parameters>
         </plugin>
     </gazebo>
- -->
+
     <!-- Gazebo Body Ref -->
     <gazebo reference="link_body">
-        <material>Gazebo/Grey</material>
     </gazebo>
 
     <!-- Gazebo Wheels Ref -->
     <gazebo reference="link_wheel_front_left">
-        <material>Gazebo/Black</material>
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
     </gazebo>
     <gazebo reference="link_wheel_front_right">
-        <material>Gazebo/Black</material>
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
     </gazebo>
     <gazebo reference="link_wheel_rear_left">
-        <material>Gazebo/Black</material>
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
     </gazebo>
     <gazebo reference="link_wheel_rear_right">
-        <material>Gazebo/Black</material>
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
     </gazebo>

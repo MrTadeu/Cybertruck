@@ -14,7 +14,7 @@
         <color rgba="1 1 1 1" />
     </material>
 
-    <!-- Root link_base -->
+    <!-- Root link_base -->fl_wheel_joint
     <link name="link_base" />
 
     <!-- Includes -->

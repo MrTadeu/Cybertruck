@@ -14,7 +14,7 @@ from launch.substitutions import Command, FindExecutable, LaunchConfiguration, P
 def generate_launch_description():
     # Launch configurations
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    use_ros2_control = LaunchConfiguration('use_ros2_control', default='false')
+    use_gazebo_ros2_control = LaunchConfiguration('use_gazebo_ros2_control', default='false')
 
     # Generate robot description from xacro
     robot_description_content = Command(
@@ -25,6 +25,10 @@ def generate_launch_description():
                 [FindPackageShare('robot_description'),
                  'urdf', 'robot.urdf.xacro']
             ),
+            ' ',
+            'use_sim_time:=', use_sim_time,
+            ' ',
+            'use_gazebo_ros2_control:=', use_gazebo_ros2_control
         ]
     )
     robot_description = {'robot_description': robot_description_content}
@@ -44,7 +48,7 @@ def generate_launch_description():
             description='Use simulation time if true'
         ),
         DeclareLaunchArgument(
-            'use_ros2_control',
+            'use_gazebo_ros2_control',
             default_value='false',
             description='Enable ROS 2 control if true'
         ),
