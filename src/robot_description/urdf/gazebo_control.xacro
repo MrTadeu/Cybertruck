@@ -3,8 +3,9 @@
 
     <!-- Gazebo Plugin -->
     <gazebo>
-        <plugin name="gz_ros2_control-system" filename="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find robot_description)/config/robot_sim.controller_manager.yaml</parameters>
+            <parameters>$(find robot_description)/config/</parameters>
         </plugin>
     </gazebo>
 
