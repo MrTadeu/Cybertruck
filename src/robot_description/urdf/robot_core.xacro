@@ -37,7 +37,7 @@
         steering_axis_xyz="0 0 1" 
         steering_origin_xyz="${wheel_offset_x_f} ${wheel_offset_y} ${wheel_offset_z}" 
         steering_origin_rpy="0 0 0" 
-        wheel_axis_xyz="0 0 1" 
+        wheel_axis_xyz="0 0 -1" 
         wheel_origin_xyz="0 0 0" 
         wheel_origin_rpy="${wheel_roll} ${wheel_pitch} ${wheel_yaw}"
         />
@@ -56,7 +56,7 @@
         steering_axis_xyz="0 0 1" 
         steering_origin_xyz="${wheel_offset_x_r} ${wheel_offset_y} ${wheel_offset_z}" 
         steering_origin_rpy="0 0 0" 
-        wheel_axis_xyz="0 0 1" 
+        wheel_axis_xyz="0 0 -1" 
         wheel_origin_xyz="0 0 0" 
         wheel_origin_rpy="${wheel_roll} ${wheel_pitch} ${wheel_yaw}"/>
 
