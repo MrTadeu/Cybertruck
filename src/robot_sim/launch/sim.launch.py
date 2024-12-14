@@ -24,7 +24,27 @@ def generate_launch_description():
         ),
         launch_arguments={'use_sim_time': use_sim_time, 'use_gazebo_ros2_control': use_gazebo_ros2_control}.items()
     )
-
+    
+    teleop_keyboard = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare('teleop_mapper'),
+                'launch',
+                'teleop_keyboard.launch.py'
+            ])
+        ),
+    )
+    
+    teleop_joystick = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare('teleop_mapper'),
+                'launch',
+                'teleop_joystick.launch.py'
+            ])
+        ),
+    )
+    
     # Spawn robot entity in Gazebo
     gz_spawn_entity = Node(
         package='ros_gz_sim',
@@ -105,5 +125,7 @@ def generate_launch_description():
                         load_forward_position_controller],
             )
         ),
-        gz_spawn_entity
+        gz_spawn_entity,
+        teleop_keyboard,
+        teleop_joystick
     ])
