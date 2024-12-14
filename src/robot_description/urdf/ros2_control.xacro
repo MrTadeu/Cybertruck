@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="10.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <ros2_control name="ros2_control_cybertruck" type="system">
@@ -7,32 +7,32 @@
       </hardware>
       <joint name="joint_rotation_front_left">
         <command_interface name="velocity">
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">-10</param>
+          <param name="max">10</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
       <joint name="joint_rotation_front_right">
         <command_interface name="velocity">
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">-10</param>
+          <param name="max">10</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
       <joint name="joint_rotation_rear_left">
         <command_interface name="velocity">
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">-10</param>
+          <param name="max">10</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
       <joint name="joint_rotation_rear_right">
         <command_interface name="velocity">
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">-10</param>
+          <param name="max">10</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
@@ -40,32 +40,32 @@
 
       <joint name="joint_steering_front_left">
         <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
+          <param name="min">-3.104</param>
+          <param name="max">3.104</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
       <joint name="joint_steering_front_right">
         <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
+          <param name="min">-3.104</param>
+          <param name="max">3.104</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
       <joint name="joint_steering_rear_left">
         <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
+          <param name="min">-3.104</param>
+          <param name="max">3.104</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
       <joint name="joint_steering_rear_right">
         <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
+          <param name="min">-3.104</param>
+          <param name="max">3.104</param>
         </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
