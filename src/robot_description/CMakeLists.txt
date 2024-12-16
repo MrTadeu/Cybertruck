@@ -5,22 +5,21 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+set(THIS_PACKAGE_INCLUDE_DEPENDS
+  xacro
+  robot_state_publisher 
+  hardware_interface #ros2 control hardware interface
+  pluginlib #ros2 control hardware interface
+  rclcpp #ros2 control hardware interface
+  rclcpp_lifecycle #ros2 control hardware interface
+  controller_manager #ros2 control hardware interface
+)
+
 # find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(xacro REQUIRED)
-find_package(robot_state_publisher REQUIRED)
+foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
 
-#ros2 control hardware interface
-find_package(hardware_interface REQUIRED)
-find_package(pluginlib REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(rclcpp_lifecycle REQUIRED)
-find_package(controller_manager REQUIRED)
-include_directories(/opt/ros/jazzy/include/hardware_interface)
-
-#find_library(LIBSERIAL_LIB serial REQUIRED)
-#target_link_libraries(${PROJECT_NAME}_hardware_interface ${LIBSERIAL_LIB}) # idk if needed
-#maybe find_package(backward_ros REQUIRED)
 
 ## COMPILE
 add_library(

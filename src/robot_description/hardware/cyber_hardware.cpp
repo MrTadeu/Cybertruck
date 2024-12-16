@@ -1,4 +1,4 @@
-//#include "robot_description/cyber_hardware.hpp"
+#include "robot_description/cyber_hardware.hpp"
 
 #include <chrono>
 #include <cmath>
