@@ -1,4 +1,4 @@
-#include "robot_description/cyber_hardware.hpp"
+#include "include/robot_description/cyber_hardware.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -18,6 +18,9 @@ namespace robot_description
 
 hardware_interface::CallbackReturn RobotHardwareInterface::on_init(const hardware_interface::HardwareInfo & info)
 {
+  if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS) {
+    return hardware_interface::CallbackReturn::ERROR;
+  }
   // Initialize hardware parameters
   return hardware_interface::CallbackReturn::SUCCESS;
 }
