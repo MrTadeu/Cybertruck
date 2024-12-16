@@ -1,0 +1,5 @@
+<library path="librobot_description_hardware_interface.so">
+  <class name="my_robot_hardware/MyRobotHardwareInterface" type="my_robot_hardware::MyRobotHardwareInterface" base_class_type="hardware_interface::SystemInterface">
+    <description>Custom Hardware Interface for Cybertruck</description>
+  </class>
+</library>

@@ -9,22 +9,45 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(xacro REQUIRED)
 find_package(robot_state_publisher REQUIRED)
+find_package(hardware_interface REQUIRED)
+find_package(pluginlib REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
+find_package(serial REQUIRED)  # For serial communication
+
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+# Add include directory
+include_directories(include)
 
+# Add hardware interface source files
+add_library(${PROJECT_NAME}_hardware_interface SHARED
+  src/MyRobotHardwareInterface.cpp
+)
+
+# Link dependencies to hardware interface
+ament_target_dependencies(${PROJECT_NAME}_hardware_interface
+  hardware_interface
+  pluginlib
+  rclcpp
+  rclcpp_lifecycle
+  serial
+)
+
+# Export plugin
+pluginlib_export_plugin_description_file(hardware_interface MyRobotHardwareInterface.xml)
+
+# Install hardware interface library
+install(
+  TARGETS ${PROJECT_NAME}_hardware_interface
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+# Install source files
 install(DIRECTORY 
   launch 
   meshes
@@ -33,11 +56,17 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
-# Following hooks are used to ensure that the correct environment variables
-# will be set by exectuting 'sourece install/setup.bash' after compilation.
-# When using this template for your project, change the filenames of the
-# files in the 'hooks' folder, to correspond to your project name.
+# Environment hooks
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.dsv.in")
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.sh.in")
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  # the following line skips the linter which checks for copyrights
+  # comment the line when a copyright and license is added to all source files
+  set(ament_cmake_cpplint_FOUND TRUE)
+  set(ament_cmake_cpplint_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
 ament_package()
