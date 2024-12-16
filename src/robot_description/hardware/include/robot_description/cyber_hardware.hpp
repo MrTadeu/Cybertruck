@@ -39,12 +39,14 @@ public:
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
 private:
-  // Parameters for the RRBot simulation
-  double hw_start_sec_;
-  double hw_stop_sec_;
-  double hw_slowdown_;
+  std::vector<double> joint_positions;
+  std::vector<double> joint_velocities;
+  std::vector<double> joint_commands;
+  std::string serial_port;
+  int baud_rate;
+  //serial::Serial serial_connection;
 };
 
 }  // namespace robot_description
 
-#endif  // robot_description__RRBOT_HPP_
+#endif  
