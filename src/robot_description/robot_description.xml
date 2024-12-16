@@ -1,0 +1,8 @@
+<library path="robot_description">
+  <class 
+    name="robot_description/RobotHardwareInterface" 
+    type="robot_description::RobotHardwareInterface" 
+    base_class_type="hardware_interface::SystemInterface">
+    <description>Custom Hardware Interface for Cybertruck</description>
+  </class>
+</library>

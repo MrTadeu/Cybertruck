@@ -9,21 +9,42 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(xacro REQUIRED)
 find_package(robot_state_publisher REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+#ros2 control hardware interface
+find_package(hardware_interface REQUIRED)
+find_package(pluginlib REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
+find_package(controller_manager REQUIRED)
+include_directories(/opt/ros/jazzy/include/hardware_interface)
+
+#find_library(LIBSERIAL_LIB serial REQUIRED)
+#target_link_libraries(${PROJECT_NAME}_hardware_interface ${LIBSERIAL_LIB}) # idk if needed
+#maybe find_package(backward_ros REQUIRED)
+
+## COMPILE
+add_library(
+  robot_description
+  SHARED
+  hardware/cyber_hardware.cpp
+)
+target_compile_features(robot_description PUBLIC cxx_std_17)
+target_include_directories(robot_description PUBLIC
+$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
+$<INSTALL_INTERFACE:include/robot_description>
+)
+ament_target_dependencies(
+  robot_description PUBLIC
+  ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+
+# Export hardware plugins
+pluginlib_export_plugin_description_file(hardware_interface robot_description.xml)
+
+install(
+  DIRECTORY hardware/include/
+  DESTINATION include/robot_description
+)
 
 install(DIRECTORY 
   launch 
@@ -33,11 +54,28 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
-# Following hooks are used to ensure that the correct environment variables
-# will be set by exectuting 'sourece install/setup.bash' after compilation.
-# When using this template for your project, change the filenames of the
-# files in the 'hooks' folder, to correspond to your project name.
+install(TARGETS robot_description
+  #TARGETS ${PROJECT_NAME}_hardware_interface # idk if needed
+  EXPORT export_robot_description
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  set(ament_cmake_copyright_FOUND TRUE)
+  set(ament_cmake_cpplint_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
+
+#hooks share stl files
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.dsv.in")
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.sh.in")
+
+#Exports
+ament_export_targets(export_robot_description HAS_LIBRARY_TARGET)
+ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 
 ament_package()
