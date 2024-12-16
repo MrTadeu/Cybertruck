@@ -21,10 +21,10 @@ foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
 endforeach()
 
 # Locate libserial manually
-find_library(LIBSERIAL_LIB NAMES serial PATHS /usr/lib /usr/local/lib REQUIRED)
-find_path(LIBSERIAL_INCLUDE_DIR NAMES SerialPort.h PATHS /usr/include/libserial /usr/local/include/libserial REQUIRED)
+find_library(LIBSERIAL_LIB NAMES serial PATHS /usr/lib /usr/local/lib REQUIRED) # Link libserial Manual
+find_path(LIBSERIAL_INCLUDE_DIR NAMES SerialPort.h PATHS /usr/include/libserial /usr/local/include/libserial REQUIRED) # Link libserial Manual
 
-if(NOT LIBSERIAL_LIB OR NOT LIBSERIAL_INCLUDE_DIR)
+if(NOT LIBSERIAL_LIB OR NOT LIBSERIAL_INCLUDE_DIR) # Link libserial Manual
   message(FATAL_ERROR "libserial not found. Ensure 'libserial-dev' is installed.")
 endif()
 
@@ -38,13 +38,13 @@ target_compile_features(robot_description PUBLIC cxx_std_17)
 target_include_directories(robot_description PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
   $<INSTALL_INTERFACE:include/robot_description>
-  ${LIBSERIAL_INCLUDE_DIR}
+  ${LIBSERIAL_INCLUDE_DIR} # Link libserial Manual
 )
 ament_target_dependencies(
   robot_description PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
-target_link_libraries(robot_description PUBLIC ${LIBSERIAL_LIB})
+target_link_libraries(robot_description PUBLIC ${LIBSERIAL_LIB}) # Link libserial Manual
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface robot_description.xml)
