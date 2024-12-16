@@ -65,3 +65,8 @@ sudo apt install ros-jazzy-xacro ros-jazzy-joint-state-publisher-gui
 sudo apt install ros-jazzy-ros2-control
 sudo apt install ros-jazzy-ros2-controllers
 # ----------------------------------------------------------------------------
+
+
+# --------------------------- Serial installation (optional / but essential to proj) --------------------------- (https://github.com/crayzeewulf/libserial/tree/master)
+sudo apt install libserial-dev
+# ----------------------------------------------------------------------------

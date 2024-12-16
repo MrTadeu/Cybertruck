@@ -1,7 +1,12 @@
 #ifndef robot_description__RRBOT_HPP_
 #define robot_description__RRBOT_HPP_
 
+#include <chrono>
+#include <cmath>
+#include <iomanip>
+#include <limits>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -12,6 +17,9 @@
 #include "rclcpp/macros.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
+#include "hardware_interface/types/hardware_interface_type_values.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include <serial/serial.h>
 
 namespace robot_description
 {

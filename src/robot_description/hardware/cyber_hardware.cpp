@@ -1,26 +1,12 @@
 #include "include/robot_description/cyber_hardware.hpp"
 
-#include <chrono>
-#include <cmath>
-#include <iomanip>
-#include <limits>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include "hardware_interface/types/hardware_interface_type_values.hpp"
-
-#include "rclcpp/rclcpp.hpp"
-
 namespace robot_description
 {
 
 hardware_interface::CallbackReturn RobotHardwareInterface::on_init(const hardware_interface::HardwareInfo & info)
 {
-  if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS) {
-    return hardware_interface::CallbackReturn::ERROR;
-  }
+  if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS) return hardware_interface::CallbackReturn::ERROR;
+
   // Initialize hardware parameters
   return hardware_interface::CallbackReturn::SUCCESS;
 }
