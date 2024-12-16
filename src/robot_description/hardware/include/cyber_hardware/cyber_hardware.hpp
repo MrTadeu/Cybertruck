@@ -15,10 +15,10 @@
 
 namespace robot_description
 {
-class RRBotSystemPositionOnlyHardware : public hardware_interface::SystemInterface
+class RobotHardwareInterface : public hardware_interface::SystemInterface
 {
 public:
-  RCLCPP_SHARED_PTR_DEFINITIONS(RRBotSystemPositionOnlyHardware);
+  RCLCPP_SHARED_PTR_DEFINITIONS(RobotHardwareInterface);
 
   hardware_interface::CallbackReturn on_init(
     const hardware_interface::HardwareInfo & info) override;
