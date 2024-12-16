@@ -19,7 +19,8 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include <serial/serial.h>
+#include <libserial/SerialPort.h>
+
 
 namespace robot_description
 {

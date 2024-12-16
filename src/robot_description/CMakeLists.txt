@@ -20,6 +20,13 @@ foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
+# Locate libserial manually
+find_library(LIBSERIAL_LIB NAMES serial PATHS /usr/lib /usr/local/lib REQUIRED)
+find_path(LIBSERIAL_INCLUDE_DIR NAMES SerialPort.h PATHS /usr/include/libserial /usr/local/include/libserial REQUIRED)
+
+if(NOT LIBSERIAL_LIB OR NOT LIBSERIAL_INCLUDE_DIR)
+  message(FATAL_ERROR "libserial not found. Ensure 'libserial-dev' is installed.")
+endif()
 
 ## COMPILE
 add_library(
@@ -29,13 +36,15 @@ add_library(
 )
 target_compile_features(robot_description PUBLIC cxx_std_17)
 target_include_directories(robot_description PUBLIC
-$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
-$<INSTALL_INTERFACE:include/robot_description>
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
+  $<INSTALL_INTERFACE:include/robot_description>
+  ${LIBSERIAL_INCLUDE_DIR}
 )
 ament_target_dependencies(
   robot_description PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
+target_link_libraries(robot_description PUBLIC ${LIBSERIAL_LIB})
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface robot_description.xml)
@@ -66,6 +75,7 @@ if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
   set(ament_cmake_cpplint_FOUND TRUE)
+  set(ament_cmake_cppcheck_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
 
