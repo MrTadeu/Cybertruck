@@ -11,7 +11,7 @@ from launch.event_handlers import OnProcessExit
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    use_gazebo_ros2_control = LaunchConfiguration('use_gazebo_ros2_control', default='false')
+    use_gazebo_ros2_control = LaunchConfiguration('use_gazebo_ros2_control', default='true')
 
     # Include robot state publisher (rsp) launch file
     rsp_launch = IncludeLaunchDescription(

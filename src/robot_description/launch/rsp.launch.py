@@ -8,7 +8,7 @@ from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitut
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
-
+from launch.conditions import IfCondition
 
 
 def generate_launch_description():
@@ -40,35 +40,35 @@ def generate_launch_description():
         output='screen',
         parameters=[robot_description]
     )
-
+    
+    #get robot controllers
+    robot_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare("robot_description"),
+            "config",
+            "drive_controller_hardware.yaml",
+        ]
+    )
+    
     # Node for Custom Controller Manager
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
-        output='screen',
-        parameters=[
-            robot_description,
-            PathJoinSubstitution([
-                FindPackageShare('robot_description'),
-                'config',
-                'robot_sim.controller_manager.yaml'
-            ])
-        ]
+        parameters=[robot_controllers],
+        output="both",
+        condition=IfCondition(use_gazebo_ros2_control)
     )
     
+    # Spawners for controllers (conditionally included)
     load_joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
         arguments=[
             'joint_state_broadcaster',
-            '--controller-manager', '/controller_manager',
-            '--param-file', PathJoinSubstitution([
-                FindPackageShare('robot_description'),
-                'config',
-                'robot_sim.controller_manager.yaml'
-            ])
+            '--param-file', robot_controllers
         ],
-        output='screen'
+        output='screen',
+        condition=IfCondition(use_gazebo_ros2_control)
     )
     
     load_forward_velocity_controller = Node(
@@ -76,14 +76,10 @@ def generate_launch_description():
         executable='spawner',
         arguments=[
             'forward_velocity_controller',
-            '--controller-manager', '/controller_manager',
-            '--param-file', PathJoinSubstitution([
-                FindPackageShare('robot_description'),
-                'config',
-                'robot_sim.controller_manager.yaml'
-            ])
+            '--param-file', robot_controllers
         ],
-        output='screen'
+        output='screen',
+        condition=IfCondition(use_gazebo_ros2_control)
     )
 
     load_forward_position_controller = Node(
@@ -91,18 +87,12 @@ def generate_launch_description():
         executable='spawner',
         arguments=[
             'forward_position_controller',
-            '--controller-manager', '/controller_manager',
-            '--param-file', PathJoinSubstitution([
-                FindPackageShare('robot_description'),
-                'config',
-                'robot_sim.controller_manager.yaml'
-            ])
+            '--param-file', robot_controllers
         ],
-        output='screen'
+        output='screen',
+        condition=IfCondition(use_gazebo_ros2_control)
     )
-
-
-
+    
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',

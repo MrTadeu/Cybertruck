@@ -1,10 +1,14 @@
-<?xml version="10.0"?>
+<?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <ros2_control name="ros2_control_cybertruck" type="system">
       <hardware>
-          <plugin>robot_description/RobotHardwareInterface</plugin>
-          <!-- <plugin>gz_ros2_control/GazeboSimSystem</plugin> -->
+          <xacro:if value="$(arg use_gazebo_ros2_control)">
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+          </xacro:if>
+          <xacro:unless value="$(arg use_gazebo_ros2_control)">
+            <plugin>robot_description/RobotHardwareInterface</plugin>
+          </xacro:unless>
       </hardware>
       <joint name="joint_rotation_front_left">
         <command_interface name="velocity">
