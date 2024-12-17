@@ -8,7 +8,7 @@ from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitut
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
-from launch.conditions import IfCondition
+from launch.conditions import UnlessCondition
 
 
 def generate_launch_description():
@@ -56,7 +56,7 @@ def generate_launch_description():
         executable='ros2_control_node',
         parameters=[robot_controllers],
         output="both",
-        condition=IfCondition(use_gazebo_ros2_control)
+        condition=UnlessCondition(use_gazebo_ros2_control)
     )
     
     # Spawners for controllers (conditionally included)
@@ -68,7 +68,7 @@ def generate_launch_description():
             '--param-file', robot_controllers
         ],
         output='screen',
-        condition=IfCondition(use_gazebo_ros2_control)
+        condition=UnlessCondition(use_gazebo_ros2_control)
     )
     
     load_forward_velocity_controller = Node(
@@ -79,7 +79,7 @@ def generate_launch_description():
             '--param-file', robot_controllers
         ],
         output='screen',
-        condition=IfCondition(use_gazebo_ros2_control)
+        condition=UnlessCondition(use_gazebo_ros2_control)
     )
 
     load_forward_position_controller = Node(
@@ -90,7 +90,7 @@ def generate_launch_description():
             '--param-file', robot_controllers
         ],
         output='screen',
-        condition=IfCondition(use_gazebo_ros2_control)
+        condition=UnlessCondition(use_gazebo_ros2_control)
     )
     
     return LaunchDescription([
