@@ -3,7 +3,8 @@
 
     <ros2_control name="ros2_control_cybertruck" type="system">
       <hardware>
-          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+          <plugin>robot_description/RobotHardwareInterface</plugin>
+          <!-- <plugin>gz_ros2_control/GazeboSimSystem</plugin> -->
       </hardware>
       <joint name="joint_rotation_front_left">
         <command_interface name="velocity">

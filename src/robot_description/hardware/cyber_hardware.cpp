@@ -20,6 +20,7 @@ hardware_interface::CallbackReturn RobotHardwareInterface::on_configure(const rc
 hardware_interface::CallbackReturn RobotHardwareInterface::on_activate(const rclcpp_lifecycle::State &)
 {
   // Activate hardware
+  RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Hardware activated!");
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -59,4 +60,6 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
 #include "pluginlib/class_list_macros.hpp"
 
 PLUGINLIB_EXPORT_CLASS(
-  robot_description::RobotHardwareInterface, hardware_interface::SystemInterface)
+  robot_description::RobotHardwareInterface, 
+  hardware_interface::SystemInterface
+)

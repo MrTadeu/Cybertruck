@@ -41,6 +41,68 @@ def generate_launch_description():
         parameters=[robot_description]
     )
 
+    # Node for Custom Controller Manager
+    controller_manager = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        output='screen',
+        parameters=[
+            robot_description,
+            PathJoinSubstitution([
+                FindPackageShare('robot_description'),
+                'config',
+                'robot_sim.controller_manager.yaml'
+            ])
+        ]
+    )
+    
+    load_joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'joint_state_broadcaster',
+            '--controller-manager', '/controller_manager',
+            '--param-file', PathJoinSubstitution([
+                FindPackageShare('robot_description'),
+                'config',
+                'robot_sim.controller_manager.yaml'
+            ])
+        ],
+        output='screen'
+    )
+    
+    load_forward_velocity_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'forward_velocity_controller',
+            '--controller-manager', '/controller_manager',
+            '--param-file', PathJoinSubstitution([
+                FindPackageShare('robot_description'),
+                'config',
+                'robot_sim.controller_manager.yaml'
+            ])
+        ],
+        output='screen'
+    )
+
+    load_forward_position_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'forward_position_controller',
+            '--controller-manager', '/controller_manager',
+            '--param-file', PathJoinSubstitution([
+                FindPackageShare('robot_description'),
+                'config',
+                'robot_sim.controller_manager.yaml'
+            ])
+        ],
+        output='screen'
+    )
+
+
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -52,5 +114,9 @@ def generate_launch_description():
             default_value='false',
             description='Enable ROS 2 control if true'
         ),
-        node_robot_state_publisher
+        node_robot_state_publisher,
+        controller_manager,
+        load_joint_state_broadcaster,
+        load_forward_velocity_controller,
+        load_forward_position_controller
     ])
