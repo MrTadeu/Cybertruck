@@ -10,37 +10,26 @@
     </gazebo>
 
     <!-- Gazebo Body Ref -->
-    <!-- Gazebo Wheels Ref -->
-    <!-- <gazebo reference="link_body">
-        <kp>500.0</kp> 
-        <kd>50.0</kd> 
+    <gazebo reference="link_body">
     </gazebo>
 
-    <gazebo reference="link_wheel_front_left">
-        <mu1 value="2.5"/>
-        <mu2 value="2.5"/>
-        <spring_k>10000</spring_k>
-        <damping>500</damping>   
+    <!-- Gazebo Wheels Ref -->
+    <!-- <gazebo reference="link_wheel_front_left">
+        <mu1 value="1.0"/> 
+        <mu2 value="1.0"/>
     </gazebo>
     <gazebo reference="link_wheel_front_right">
-        <mu1 value="2.5"/>
-        <mu2 value="2.5"/>
-        <spring_k>10000</spring_k>
-        <damping>500</damping>
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
     </gazebo>
     <gazebo reference="link_wheel_rear_left">
-        <mu1 value="2.5"/>
-        <mu2 value="2.5"/>
-        <spring_k>10000</spring_k>
-        <damping>500</damping>
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
     </gazebo>
     <gazebo reference="link_wheel_rear_right">
-        <mu1 value="2.5"/>
-        <mu2 value="2.5"/>
-        <spring_k>10000</spring_k>
-        <damping>500</damping>
-    </gazebo>
- -->
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
+    </gazebo> -->
     <gazebo reference="link_wheel_front_left">
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
@@ -56,5 +45,5 @@
     <gazebo reference="link_wheel_rear_right">
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>
-    </gazebo> 
+    </gazebo>
 </robot>
