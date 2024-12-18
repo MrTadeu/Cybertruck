@@ -107,9 +107,9 @@ hardware_interface::return_type RobotHardwareInterface::read(const rclcpp::Time 
     std::string response;
     if (arduino_comms.is_connected())
     {
-      response = arduino_comms.receive_msg(); 
+      response = arduino_comms.receive_msg();
 
-      if (!response.empty())  // Ignorar mensagens vazias
+      if (!response.empty() && response.find("vel_front") != std::string::npos) // Ignorar mensagens vazias
       {
         RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Received: %s", response.c_str());
         

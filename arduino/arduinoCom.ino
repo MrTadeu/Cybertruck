@@ -16,15 +16,8 @@ void setup()
 void loop()
 {
     // Verifica se há dados disponíveis na Serial
-    vel_front = 100;
-    Serial.print("vel_front ");
-    Serial.print(vel_front);
-    Serial.print(" pos_front ");
-    Serial.print(pos_front);
-    Serial.print(" vel_rear ");
-    Serial.print(vel_rear);
-    Serial.print(" pos_rear ");
-    Serial.println(pos_rear);
+    // Serial.println("vel_front 100 pos_front 0 vel_rear 50 pos_rear 0");
+
     if (Serial.available() > 0)
     {
         String msg = Serial.readStringUntil('\r'); // Ler até "\r" (final da mensagem)

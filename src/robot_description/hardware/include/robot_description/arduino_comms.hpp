@@ -121,12 +121,24 @@ public:
 
         std::string response;
         char buffer;
-        while (serial_conn_.IsDataAvailable())
+        bool message_complete = false;
+
+        while (!message_complete)
         {
-            serial_conn_.ReadByte(buffer, timeout_ms_);
-            response += buffer;
-            if (buffer == '\r') // End of message
-                break;
+            if (serial_conn_.IsDataAvailable())
+            {
+                serial_conn_.ReadByte(buffer, timeout_ms_);
+
+                if (buffer >= 32 && buffer <= 126) // Filtra apenas caracteres válidos
+                {
+                    response += buffer;
+                }
+
+                if (buffer == '\n') // Final da mensagem
+                {
+                    message_complete = true;
+                }
+            }
         }
 
         return response;
