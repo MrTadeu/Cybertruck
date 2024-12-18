@@ -1,8 +1,7 @@
 #include <Servo.h>
 #define STOP_PULSE_LENGTH 1000 // Neutral/Stop pulse length in µs
 #define MIN_PULSE_LENGTH 1150 // Minimum pulse length in µs
-#define MAX_FORWARD_PULSE_LENGTH 1480 // Maximum pulse for forward in µs
-#define MAX_REVERSE_PULSE_LENGTH 2000 // Maximum pulse for reverse in µs
+#define MAX_REVERSE_PULSE_LENGTH 1400 //DEFAULT - 2000 / SAFE - 1400 // Maximum pulse in µs
 
 Servo motA, motB, motAR, motBR; // Servos for all motors
 char data;
@@ -17,7 +16,7 @@ void setup() {
 
     displayInstructions();
 
-    setThrottle(1000);
+    setThrottle(1000,0);
 }
 
 void loop() {
@@ -27,27 +26,27 @@ void loop() {
         switch (data) {
             case '1': // Neutral/Stop
                 Serial.println("Stopping motors (neutral position)");
-                setThrottle(1000);
+                setThrottle(1000,0);
                 break;
 
             case '2': // Forward minimum throttle
                 Serial.println("Moving forward at minimum throttle");
-                setThrottle(MIN_PULSE_LENGTH);
+                setThrottle(MIN_PULSE_LENGTH, 0);
                 break;
 
             case '3': // Forward maximum throttle
                 Serial.println("Moving forward at maximum throttle");
-                setThrottle(MAX_FORWARD_PULSE_LENGTH);
+                setThrottle(MAX_REVERSE_PULSE_LENGTH, 0);
                 break;
 
             case '4': // Reverse minimum throttle
                 Serial.println("Moving reverse at minimum throttle");
-                setThrottle(STOP_PULSE_LENGTH + 10); // Slightly above neutral for reverse
+                setThrottle(MIN_PULSE_LENGTH, 1); // Slightly above neutral for reverse
                 break;
 
             case '5': // Reverse maximum throttle
                 Serial.println("Moving reverse at maximum throttle");
-                setThrottle(MAX_REVERSE_PULSE_LENGTH);
+                setThrottle(MAX_REVERSE_PULSE_LENGTH, 1);
                 break;
 
             case '6': // Gradual throttle increase
@@ -62,11 +61,17 @@ void loop() {
     }
 }
 
-void setThrottle(int pulseLength) {
+void setThrottle(int pulseLength, int reverse) {
     motA.writeMicroseconds(pulseLength);
     motB.writeMicroseconds(pulseLength);
-    motAR.writeMicroseconds(pulseLength);
-    motBR.writeMicroseconds(pulseLength);
+    if(reverse == 1){
+      motAR.writeMicroseconds(STOP_PULSE_LENGTH);
+      motBR.writeMicroseconds(STOP_PULSE_LENGTH);
+    }
+    else{
+      motAR.writeMicroseconds(MAX_REVERSE_PULSE_LENGTH);
+      motBR.writeMicroseconds(MAX_REVERSE_PULSE_LENGTH);
+    }
 }
 
 void gradualThrottleIncrease() {
@@ -74,12 +79,22 @@ void gradualThrottleIncrease() {
         Serial.print("Current throttle pulse: ");
         Serial.println(i);
 
-        setThrottle(i);
-        delay(1250);
+        setThrottle(i,0);
+        delay(500);
     }
-
     Serial.println("Reached maximum throttle.");
-    setThrottle(STOP_PULSE_LENGTH);
+
+
+    for (int i = MIN_PULSE_LENGTH; i <= MAX_REVERSE_PULSE_LENGTH; i += 10) {
+        Serial.print("Current throttle pulse Reverse: ");
+        Serial.println(i);
+
+        setThrottle(i,1);
+        delay(500);
+    }
+    Serial.println("Reached maximum throttle reverse.");
+
+    setThrottle(STOP_PULSE_LENGTH, 0);
 }
 
 void displayInstructions() {
