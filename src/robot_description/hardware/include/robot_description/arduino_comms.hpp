@@ -3,10 +3,12 @@
 #include <sstream>
 #include <libserial/SerialPort.h>
 #include <iostream>
+#include <string>
+#include <thread>
+#include <chrono>
 
 LibSerial::BaudRate convert_baud_rate(int baud_rate)
 {
-    // Just handle some common baud rates
     switch (baud_rate)
     {
     case 1200:
@@ -30,62 +32,110 @@ LibSerial::BaudRate convert_baud_rate(int baud_rate)
     case 230400:
         return LibSerial::BaudRate::BAUD_230400;
     default:
-        std::cout << "Error! Baud rate " << baud_rate << " not supported! Default to 57600" << std::endl;
+        std::cerr << "Error! Baud rate " << baud_rate << " not supported! Defaulting to 57600" << std::endl;
         return LibSerial::BaudRate::BAUD_57600;
     }
 }
 
 class ArduinoComms
 {
-
 public:
-    ArduinoComms() = default;
+    int attempt = 0;
+    ArduinoComms() : connected_(false) {}
 
-    void connect(const std::string &serial_device, int32_t baud_rate, int32_t timeout_ms)
+    bool connect(const std::string &serial_device, int32_t baud_rate, int32_t timeout_ms)
     {
+        serial_device_ = serial_device;
+        baud_rate_ = baud_rate;
         timeout_ms_ = timeout_ms;
-        serial_conn_.Open(serial_device);
-        serial_conn_.SetBaudRate(convert_baud_rate(baud_rate));
+
+        try
+        {
+            serial_conn_.Open(serial_device_);
+            serial_conn_.SetBaudRate(convert_baud_rate(baud_rate_));
+            connected_ = true;
+            std::cout << "Successfully connected to: " << serial_device_ << std::endl;
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "Failed to connect to " << serial_device_ << ": " << e.what() << std::endl;
+            connected_ = false;
+        }
+
+        return connected_;
     }
 
     void disconnect()
     {
-        serial_conn_.Close();
-    }
-
-    bool connected() const
-    {
-        return serial_conn_.IsOpen();
-    }
-
-    std::string send_msg(const std::string &msg_to_send/* , bool print_output = false */)
-    {
-        serial_conn_.FlushIOBuffers(); // Just in case
-        serial_conn_.Write(msg_to_send);
-
-        std::string response = "";
-        /* try {
-            // Responses end with \r\n so we will read up to (and including) the \n.
-            serial_conn_.ReadLine(response, '\n', timeout_ms_);
-        }
-        catch (const LibSerial::ReadTimeout &)
+        if (serial_conn_.IsOpen())
         {
-            std::cerr << "The ReadByte() call has timed out." << std::endl;
+            serial_conn_.Close();
+            connected_ = false;
+            std::cout << "Disconnected from: " << serial_device_ << std::endl;
+        }
+        else
+        {
+            std::cout << "Serial connection already closed." << std::endl;
+        }
+    }
+
+    bool is_connected() const { return connected_; }
+
+    void reconnect(int max_attempts = 10, int retry_delay_ms = 500)
+    {
+        while (attempt < max_attempts && !connected_)
+        {
+            std::cout << "Reconnection attempt " << (attempt + 1)
+                      << " of " << max_attempts << " to: " << serial_device_ << std::endl;
+
+            connected_ = connect(serial_device_, baud_rate_, timeout_ms_);
+
+            if (!connected_)
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(retry_delay_ms));
+            }
+            attempt++;
+        }
+    }
+
+    void send_msg(const std::string &msg)
+    {
+        if (!connected_)
+        {
+            reconnect();
+            if (!connected_)
+            {
+                throw std::runtime_error("Unable to send message: Not connected to hardware.");
+            }
         }
 
-        if (print_output) {
-            std::cout << "Sent: " << msg_to_send << " Recv: " << response << std::endl;
-        } */
+        serial_conn_.Write(msg);
+    }
+
+    std::string receive_msg()
+    {
+        if (!connected_)
+        {
+            throw std::runtime_error("Cannot receive message: Not connected to hardware.");
+        }
+
+        std::string response;
+        char buffer;
+        while (serial_conn_.IsDataAvailable())
+        {
+            serial_conn_.ReadByte(buffer, timeout_ms_);
+            response += buffer;
+            if (buffer == '\r') // End of message
+                break;
+        }
 
         return response;
     }
 
-    void send_empty_msg()
-    {
-        std::string response = send_msg("\r");
-    }
-
 private:
     LibSerial::SerialPort serial_conn_;
-    int timeout_ms_;
+    std::string serial_device_;
+    int32_t baud_rate_;
+    int32_t timeout_ms_;
+    bool connected_;
 };

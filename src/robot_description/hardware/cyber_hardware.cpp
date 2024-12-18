@@ -102,8 +102,27 @@ std::vector<hardware_interface::CommandInterface> RobotHardwareInterface::export
 
 hardware_interface::return_type RobotHardwareInterface::read(const rclcpp::Time &, const rclcpp::Duration &)
 {
-  // Read hardware state
-  return hardware_interface::return_type::OK;
+  try
+  {
+    std::string response;
+    if (arduino_comms.is_connected())
+    {
+      response = arduino_comms.receive_msg(); 
+
+      if (!response.empty())  // Ignorar mensagens vazias
+      {
+        RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Received: %s", response.c_str());
+        
+        // Processar a mensagem aqui, se necessário
+      }
+    }
+    return hardware_interface::return_type::OK;
+  }
+  catch (const std::exception &e)
+  {
+    RCLCPP_ERROR(rclcpp::get_logger("RobotHardwareInterface"), "Error reading from Arduino: %s", e.what());
+    return hardware_interface::return_type::ERROR;
+  }
 }
 
 hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time &, const rclcpp::Duration &)
@@ -119,7 +138,7 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
     double rear_pos_avg = (wheel_rear[LEFT].pos + wheel_rear[RIGHT].pos) / 2.0;
 
     // Enviar os comandos para arduino
-    if (arduino_comms.connected())
+    if (arduino_comms.is_connected())
     {
       std::stringstream cmd_front, cmd_rear, cmd;
       cmd_front << "vel_front " << static_cast<int>(front_vel_avg)
@@ -131,6 +150,10 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
 
       RCLCPP_DEBUG(rclcpp::get_logger("RobotHardwareInterface"),
                    "Sent to front: vel = %.2f, pos = %.2f", front_vel_avg, front_pos_avg);
+    }
+    else
+    {
+      arduino_comms.reconnect();
     }
 
     // Enviar os comandos para outro arduino
