@@ -141,20 +141,21 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
 
     front_vel_avg = std::clamp(front_vel_avg, -10.0, 10.0);
     rear_vel_avg = std::clamp(rear_vel_avg, -10.0, 10.0);
-    
+
     if (std::isnan(front_vel_avg) || std::isnan(front_pos_avg) || std::isnan(rear_vel_avg) || std::isnan(rear_pos_avg)){
       RCLCPP_ERROR(rclcpp::get_logger("RobotHardwareInterface"), "Invalid data: NaN detected.");
       return hardware_interface::return_type::ERROR;
     }
     // Enviar os comandos para arduino
     if (arduino_comms.is_connected()){
-      std::stringstream cmd_front, cmd_rear, cmd;
-      cmd_front << "vel_front " << static_cast<float>(front_vel_avg)
-                << " pos_front " << static_cast<float>(front_pos_avg);
-      cmd_rear << "vel_rear " << static_cast<float>(rear_vel_avg)
-               << " pos_rear " << static_cast<float>(rear_pos_avg);
-      cmd << cmd_front.str() << " " << cmd_rear.str() << "\n";
-      arduino_comms.send_msg(cmd.str() << "\n");
+      std::stringstream cmd;
+      cmd << std::fixed << std::setprecision(3);
+      cmd << "vel_front " << front_vel_avg
+          << " pos_front " << front_pos_avg
+          << " vel_rear " << rear_vel_avg
+          << " pos_rear " << rear_pos_avg
+          << "\n";
+      arduino_comms.send_msg(cmd.str());
 
       RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Preparing to send: %s", cmd.str().c_str());
     }

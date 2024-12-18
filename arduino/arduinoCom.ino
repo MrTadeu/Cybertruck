@@ -17,10 +17,6 @@ void parseSerialData(String input)
     // Verifica se o input contém os parâmetros esperados
     if (isValidMessage(input))
     {
-        //    if (input.startsWith("vel_front")) {
-        //  sscanf(input.c_str(), "vel_front %f pos_front %f vel_rear %f pos_rear %f",
-        //          &vel_front, &pos_front, &vel_rear, &pos_rear);
-        //}
         int velFrontStart = input.indexOf("vel_front") + 10;
         int posFrontStart = input.indexOf("pos_front") + 10;
         int velRearStart = input.indexOf("vel_rear") + 9;
