@@ -5,3 +5,5 @@ LIBGL_DEBUG=verbose ros2 run rviz2 rviz2
 ros2 launch robot_description sim.launch.py
 
 ros2 launch robot_sim sim.launch.py use_gazebo_ros2_control:=true use_sim_time:=true
+
+os2 launch robot_description rsp.launch.py 

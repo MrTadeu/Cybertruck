@@ -3,6 +3,9 @@ int pos_front = 0;
 int vel_rear = 0;
 int pos_rear = 0;
 
+int decay_vel = 5;
+int decay_pos = 5;
+
 void setup()
 {
     // Inicializa a Serial para comunicação com ROS2
@@ -21,7 +24,12 @@ void loop()
     if (Serial.available() > 0)
     {
         String msg = Serial.readStringUntil('\r'); // Ler até "\r" (final da mensagem)
-        processInput(msg);                         // Processa a mensagem recebida
+        Serial.println("Received: " + msg);
+        // processInput(msg);                         // Processa a mensagem recebida
+        // vel_front - decay_vel == 0 ? 0 : vel_front - decay_vel;
+        // pos_front - decay_pos == 0 ? 0 : pos_front - decay_pos;
+        // vel_rear - decay_vel == 0 ? 0 : vel_rear - decay_vel;
+        // pos_rear - decay_pos == 0 ? 0 : pos_rear - decay_pos;
     }
     delay(500);
 }

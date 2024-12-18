@@ -1,4 +1,5 @@
 #include "include/robot_description/cyber_hardware.hpp"
+static std::string prev_msg = "";
 
 namespace robot_description
 {
@@ -109,10 +110,11 @@ hardware_interface::return_type RobotHardwareInterface::read(const rclcpp::Time 
     {
       response = arduino_comms.receive_msg();
 
-      if (!response.empty() && response.find("vel_front") != std::string::npos) // Ignorar mensagens vazias
+      if (!response.empty() && response.find("vel_front") != std::string::npos /* && response != prev_msg */) // Ignorar mensagens vazias
       {
-        RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Received: %s", response.c_str());
-        
+        prev_msg = response;
+        RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Received: \033[34m %s\033[m", response.c_str());
+
         // Processar a mensagem aqui, se necessário
       }
     }
@@ -147,6 +149,10 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
                 << " pos_rear " << static_cast<int>(rear_pos_avg) << "\r";
       cmd << cmd_front.str() << " " << cmd_rear.str();
       arduino_comms.send_msg(cmd.str());
+
+      RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Preparing to send: %s", cmd.str().c_str());
+      arduino_comms.send_msg(cmd.str().c_str());
+      RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Message sent!");
 
       RCLCPP_DEBUG(rclcpp::get_logger("RobotHardwareInterface"),
                    "Sent to front: vel = %.2f, pos = %.2f", front_vel_avg, front_pos_avg);
