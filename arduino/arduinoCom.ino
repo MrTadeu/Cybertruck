@@ -23,6 +23,7 @@ void loop()
         String msg = Serial.readStringUntil('\r'); // Ler até "\r" (final da mensagem)
         processInput(msg);                         // Processa a mensagem recebida
     }
+    delay(500);
 }
 
 // Função para processar o comando recebido
@@ -52,7 +53,6 @@ void processInput(String input)
         pos_rear = input.substring(pos_rear_pos + 8, input.indexOf(' ', pos_rear_pos + 8)).toInt();
     }
 
-    vel_front = 100;
     // Envia feedback para o ROS2
     Serial.print("vel_front ");
     Serial.print(vel_front);
