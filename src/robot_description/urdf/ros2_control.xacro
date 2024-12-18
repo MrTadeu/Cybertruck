@@ -16,7 +16,7 @@
             <param name="rear_wheel_left_vel">joint_rotation_rear_left</param>
             <param name="rear_wheel_right_pos">joint_steering_rear_right</param>
             <param name="rear_wheel_left_pos">joint_steering_rear_left</param>
-            <param name="device">/dev/ttyACM0</param>
+            <param name="device">/dev/ttyUSB0</param>
             <param name="baud_rate">115200</param>
             <param name="timeout_ms">1000</param>
           </xacro:unless>

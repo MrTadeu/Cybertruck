@@ -9,7 +9,7 @@
             <child link="link_steering_${wheel_name}"/>
             <axis xyz="${steering_axis_xyz}"/>
             <origin xyz="${steering_origin_xyz}" rpy="${steering_origin_rpy}"/>
-            <limit effort="10.0" velocity="1.0" lower="-0.45" upper="0.45"/>
+            <limit effort="10.0" velocity="1.0" lower="-0.523598333" upper="0.523598333"/> <!-- -30 to 30 degrees -->
         </joint>
 
         <!-- Steering Link -->
