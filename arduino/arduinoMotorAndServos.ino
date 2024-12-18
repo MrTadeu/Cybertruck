@@ -97,7 +97,7 @@ void loop()
             setThrottle(map(vel_front,0.01,10,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 0);
         }
         else if(vel_front < 0){
-            setThrottle(map(vel_front,-10, 0.01,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 1);
+            setThrottle(map(vel_front,0.01, -10,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 1);
         }
         
      
