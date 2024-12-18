@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
+    
     <!-- Gazebo Plugin -->
     <gazebo>
         <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
@@ -15,19 +15,19 @@
 
     <!-- Gazebo Wheels Ref -->
     <gazebo reference="link_wheel_front_left">
-        <mu1 value="0.001"/>
-        <mu2 value="0.001"/>
+        <mu1 value="0.005"/>
+        <mu2 value="0.005"/>
     </gazebo>
     <gazebo reference="link_wheel_front_right">
-        <mu1 value="0.001"/>
-        <mu2 value="0.001"/>
+        <mu1 value="0.005"/>
+        <mu2 value="0.005"/>
     </gazebo>
     <gazebo reference="link_wheel_rear_left">
-        <mu1 value="0.001"/>
-        <mu2 value="0.001"/>
+        <mu1 value="0.005"/>
+        <mu2 value="0.005"/>
     </gazebo>
     <gazebo reference="link_wheel_rear_right">
-        <mu1 value="0.001"/>
-        <mu2 value="0.001"/>
+        <mu1 value="0.005"/>
+        <mu2 value="0.005"/>
     </gazebo>
 </robot>
