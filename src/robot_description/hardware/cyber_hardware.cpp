@@ -139,23 +139,24 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
     double rear_vel_avg = (wheel_rear[LEFT].vel + wheel_rear[RIGHT].vel) / 2.0;
     double rear_pos_avg = (wheel_rear[LEFT].pos + wheel_rear[RIGHT].pos) / 2.0;
 
+    front_vel_avg = std::clamp(front_vel_avg, -10.0, 10.0);
+    rear_vel_avg = std::clamp(rear_vel_avg, -10.0, 10.0);
+    
+    if (std::isnan(front_vel_avg) || std::isnan(front_pos_avg) || std::isnan(rear_vel_avg) || std::isnan(rear_pos_avg)){
+      RCLCPP_ERROR(rclcpp::get_logger("RobotHardwareInterface"), "Invalid data: NaN detected.");
+      return hardware_interface::return_type::ERROR;
+    }
     // Enviar os comandos para arduino
-    if (arduino_comms.is_connected())
-    {
+    if (arduino_comms.is_connected()){
       std::stringstream cmd_front, cmd_rear, cmd;
-      cmd_front << "vel_front " << static_cast<int>(front_vel_avg)
-                << " pos_front " << static_cast<int>(front_pos_avg) << "\r";
-      cmd_rear << "vel_rear " << static_cast<int>(rear_vel_avg)
-                << " pos_rear " << static_cast<int>(rear_pos_avg) << "\r";
-      cmd << cmd_front.str() << " " << cmd_rear.str();
-      arduino_comms.send_msg(cmd.str());
+      cmd_front << "vel_front " << static_cast<float>(front_vel_avg)
+                << " pos_front " << static_cast<float>(front_pos_avg);
+      cmd_rear << "vel_rear " << static_cast<float>(rear_vel_avg)
+               << " pos_rear " << static_cast<float>(rear_pos_avg);
+      cmd << cmd_front.str() << " " << cmd_rear.str() << "\n";
+      arduino_comms.send_msg(cmd.str() << "\n");
 
       RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Preparing to send: %s", cmd.str().c_str());
-      arduino_comms.send_msg(cmd.str().c_str());
-      RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "Message sent!");
-
-      RCLCPP_DEBUG(rclcpp::get_logger("RobotHardwareInterface"),
-                   "Sent to front: vel = %.2f, pos = %.2f", front_vel_avg, front_pos_avg);
     }
     else
     {
