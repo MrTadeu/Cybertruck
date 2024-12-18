@@ -14,6 +14,22 @@
     </gazebo>
 
     <!-- Gazebo Wheels Ref -->
+    <!-- <gazebo reference="link_wheel_front_left">
+        <mu1 value="1.0"/> 
+        <mu2 value="1.0"/>
+    </gazebo>
+    <gazebo reference="link_wheel_front_right">
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
+    </gazebo>
+    <gazebo reference="link_wheel_rear_left">
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
+    </gazebo>
+    <gazebo reference="link_wheel_rear_right">
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
+    </gazebo> -->
     <gazebo reference="link_wheel_front_left">
         <mu1 value="0.001"/>
         <mu2 value="0.001"/>

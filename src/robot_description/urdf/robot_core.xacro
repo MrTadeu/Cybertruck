@@ -14,8 +14,14 @@
         <color rgba="1 1 1 1" />
     </material>
 
-    <!-- Root link_base -->fl_wheel_joint
-    <link name="link_base" />
+    <!-- Root link_base -->
+    <link name="link_base">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.0" />
+            <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+        </inertial>
+    </link>
 
     <!-- Includes -->
     <xacro:include filename="wheel.urdf.xacro"/>
