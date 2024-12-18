@@ -126,7 +126,6 @@ def generate_launch_description():
             )
         ),
         gz_spawn_entity,
-        
+        teleop_keyboard,
+        teleop_joystick
     ])
-""" teleop_keyboard,
-        teleop_joystick """

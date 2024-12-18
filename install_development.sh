@@ -55,16 +55,15 @@ sudo apt install 'ros-jazzy-rqt*'
 # ----------------------------------------------------------------------------
 # --------------------------- Joint GUI installation --------------------------- 
 
-sudo apt install ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-joint-state-publisher-gui
+sudo apt install ros-jazzy-xacro ros-jazzy-joint-state-publisher-gui
 
 # ----------------------------------------------------------------------------
 
 # --------------------------- ROS2 control & controllers installation --------------------------- (https://control.ros.org/jazzy/doc/getting_started/getting_started.html#binary-packages)
 
 
-sudo apt install ros-$ROS_DISTRO-ros2-control 
-sudo apt install ros-$ROS_DISTRO-ros2-controllers
-sudo apt install ros-$ROS_DISTRO-gz-ros2-control
+sudo apt install ros-jazzy-ros2-control
+sudo apt install ros-jazzy-ros2-controllers
 # ----------------------------------------------------------------------------
 
 

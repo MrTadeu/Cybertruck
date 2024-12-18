@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <!-- 
-    comprimento 597.271 mm
-    altura 138.91590 mm
-    largura 250.382 mm
-     -->
+
     <!-- Main body -->
     <link name="link_body">
         <!-- Body Front -->
@@ -61,10 +57,10 @@
         <!-- Inertial -->
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0" />
-            <mass value="32.0" />
-            <!-- <inertia ixx="1.186" ixy="0.0" ixz="0.0" iyy="1.02" iyz="0.0" izz="5.18" /> -->
+            <mass value="50.0" />
             <inertia ixx="0.126164" ixy="0.0" ixz="0.0" iyy="0.416519" iyz="0.0" izz="0.481014" />
-            <!-- <inertia ixx="8.125" ixy="0.0" ixz="0.0" iyy="30.625" iyz="0.0" izz="45.0" /> -->
         </inertial>
     </link>
+
+
 </robot>
