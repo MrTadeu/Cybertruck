@@ -16,6 +16,8 @@ float vel_front = 0;
 float pos_front = 0;
 float vel_rear = 0;
 float pos_rear = 0;
+bool isIdle = true; // Flag to indicate idle state
+uint8_t wavePosition = 0; // For the rainbow wave effect
 
 void setup() {
   Serial.begin(115200);
@@ -45,7 +47,7 @@ void parseSerialData(String input) {
     vel_rear = input.substring(velRearStart, input.indexOf(" ", velRearStart)).toFloat();
     pos_rear = input.substring(posRearStart).toFloat();
 
-    Serial.print("VARIABLE RECIEVED- ");
+    Serial.print("VARIABLE RECEIVED - ");
     Serial.print("vel_front ");
     Serial.print(vel_front);
     Serial.print(" pos_front ");
@@ -54,6 +56,9 @@ void parseSerialData(String input) {
     Serial.print(vel_rear);
     Serial.print(" pos_rear ");
     Serial.println(pos_rear);
+
+    // Reset idle state if valid data is received
+    isIdle = false;
   }
 }
 
@@ -62,54 +67,50 @@ void loop() {
     String msg = Serial.readStringUntil('\n');
     msg.trim();
     parseSerialData(msg);
+  } else {
+    isIdle = true; // No serial data received
   }
 
-  // Update LED_PIN_1 based on vel_front
-  updateStrip1();
+  if (isIdle || (vel_front == 0 && pos_front == 0)) {
+    // Idle state: display rainbow wave on LED_PIN_1
+    showRainbowWave();
+  } else {
+    // Update LED_PIN_1 based on vel_front
+    updateStrip1();
+  }
 
-  // Update LED_PIN_2 for turn signals
+  // Update LED_PIN_2 for blinker logic
   updateStrip2();
 
   FastLED.show();
   delay(TRANSITION_DELAY);
 }
 
-// Update LED_PIN_1 based on vel_front
-void updateStrip1() {
-  CRGB green = CRGB::Green;       // Criar objetos CRGB
-  CRGB darkGreen = CRGB(0, 64, 0); // Verde mais escuro
-  CRGB red = CRGB::Red;           // Criar objetos CRGB
-  CRGB darkRed = CRGB(64, 0, 0);  // Vermelho mais escuro
-  CRGB color;
-
-  if (vel_front > 0) {
-    color = green.lerp8(darkGreen, map(vel_front, 0, 10, 0, 255));
-  } else if (vel_front < 0) {
-    color = red.lerp8(darkRed, map(abs(vel_front), 0, 10, 0, 255));
-  } else {
-    color = CRGB::Black; // LEDs apagados quando parado
+// Display rainbow wave effect on LED_PIN_1
+void showRainbowWave() {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds1[i] = CHSV((wavePosition + i * 10) % 255, 255, 255); // Generate a rainbow wave
   }
+  wavePosition++; // Increment the wave position for animation
+}
+
+// Update LED_PIN_1 based on vel_front with rainbow effect
+void updateStrip1() {
+  uint8_t hue = map(vel_front, -10, 10, 0, 255); // Map speed to hue (0 = green, 128 = yellow, 255 = red)
+  CRGB color = CHSV(hue, 255, 255);              // Create a color from the hue
   fillStrip(leds1, color);
 }
 
-
-// Update LED_PIN_2 for turn signals
+// Update LED_PIN_2 for blinker logic
 void updateStrip2() {
-  static bool blinkState = false;
-  blinkState = !blinkState; // Toggle blink state
+  for (int i = 0; i < NUM_LEDS_2; i++) {
+    leds2[i] = CRGB::White; // Set all LEDs to white by default
+  }
 
-  leds2[1] = CRGB::White; // Center LEDs always white
-  leds2[2] = CRGB::White;
-
-  if (pos_front < 0) { // Turning left
-    leds2[0] = blinkState ? CRGB::Yellow : CRGB::Black;
-    leds2[3] = CRGB::Black;
-  } else if (pos_front > 0) { // Turning right
-    leds2[0] = CRGB::Black;
-    leds2[3] = blinkState ? CRGB::Yellow : CRGB::Black;
-  } else { // No turn
-    leds2[0] = CRGB::Black;
-    leds2[3] = CRGB::Black;
+  if (pos_front < 0) { // Left turn
+    leds2[0] = CRGB(85, 255, 0); // Leftmost LED turns yellow
+  } else if (pos_front > 0) { // Right turn
+    leds2[3] = CRGB(85, 255, 0); // Rightmost LED turns yellow
   }
 }
 
