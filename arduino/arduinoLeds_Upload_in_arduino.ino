@@ -76,16 +76,22 @@ void loop() {
 
 // Update LED_PIN_1 based on vel_front
 void updateStrip1() {
+  CRGB green = CRGB::Green;       // Criar objetos CRGB
+  CRGB darkGreen = CRGB(0, 64, 0); // Verde mais escuro
+  CRGB red = CRGB::Red;           // Criar objetos CRGB
+  CRGB darkRed = CRGB(64, 0, 0);  // Vermelho mais escuro
   CRGB color;
+
   if (vel_front > 0) {
-    color = CRGB::Green.lerp8(CRGB::DarkGreen, map(vel_front, 0, 10, 0, 255));
+    color = green.lerp8(darkGreen, map(vel_front, 0, 10, 0, 255));
   } else if (vel_front < 0) {
-    color = CRGB::Red.lerp8(CRGB::DarkRed, map(abs(vel_front), 0, 10, 0, 255));
+    color = red.lerp8(darkRed, map(abs(vel_front), 0, 10, 0, 255));
   } else {
-    color = CRGB::Black; // Off when stopped
+    color = CRGB::Black; // LEDs apagados quando parado
   }
   fillStrip(leds1, color);
 }
+
 
 // Update LED_PIN_2 for turn signals
 void updateStrip2() {

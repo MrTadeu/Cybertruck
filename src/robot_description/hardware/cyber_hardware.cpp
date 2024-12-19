@@ -146,8 +146,8 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
     front_vel_avg = std::clamp(front_vel_avg, -10.0, 10.0);
     rear_vel_avg = std::clamp(rear_vel_avg, -10.0, 10.0);
     
-    front_pos_avg = std::clamp(front_vel_avg, -2.0, 2.0);
-    rear_pos_avg = std::clamp(rear_vel_avg, -2.0, 2.0);
+    front_pos_avg = std::clamp(front_pos_avg, -2.0, 2.0);
+    rear_pos_avg = std::clamp(rear_pos_avg, -2.0, 2.0);
 
     if (std::isnan(front_vel_avg) || std::isnan(front_pos_avg) || std::isnan(rear_vel_avg) || std::isnan(rear_pos_avg)){
       RCLCPP_ERROR(rclcpp::get_logger("RobotHardwareInterface"), "Invalid data: NaN detected.");
