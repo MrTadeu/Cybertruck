@@ -28,6 +28,9 @@ class TeleopMapper(Node):
         steer_msg = Float64MultiArray()
         steer_msg.data = [steering_angle, steering_angle, 0.0, 0.0]  # Adjust for front steering
         self.steering_publisher.publish(steer_msg)
+        
+        self.get_logger().info(f"Linear Vel: {linear_vel:.2f}, Angular Vel: {steering_angle:.2f}")
+
 
 def main(args=None):
     rclpy.init(args=args)
