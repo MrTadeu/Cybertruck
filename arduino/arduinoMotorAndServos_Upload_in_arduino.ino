@@ -121,10 +121,10 @@ void loop()
           setThrottle(STOP_PULSE_LENGTH, 0);
       }
       else if(vel_front > 0){
-          setThrottle(map(vel_front,0.01,10,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 0);
+          setThrottle(map(vel_front,0.01,10,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 1);
       }
       else if(vel_front < 0){
-          setThrottle(map(vel_front,-0.01, -10,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 1);
+          setThrottle(map(vel_front,-0.01, -10,MIN_PULSE_LENGTH,MAX_PULSE_LENGTH), 0);
       }
       
       if (pos_front == 0 ) {
