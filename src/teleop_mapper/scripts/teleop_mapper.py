@@ -7,30 +7,29 @@ from std_msgs.msg import Float64MultiArray
 class TeleopMapper(Node):
     def __init__(self):
         super().__init__('teleop_mapper')
+        # Publishers for velocity and steering commands
         self.velocity_publisher = self.create_publisher(Float64MultiArray, '/forward_velocity_controller/commands', 10)
         self.steering_publisher = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands', 10)
+        # Subscriber to Twist messages
         self.subscription = self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
 
     def cmd_vel_callback(self, msg: Twist):
-        # Map linear velocity to wheel velocity
-        linear_vel = msg.linear.x
-        angular_vel = msg.angular.z
+        linear_vel = max(-10.0, min(10.0, linear_vel))
 
-        # Adjust steering based on angular velocity
-        steering_angle = angular_vel  # Simple mapping, refine as needed
+        angular_vel = max(-2.0, min(2.0, angular_vel))
 
-        # Publish velocity command
+        # Publish the scaled and clamped velocity command
         vel_msg = Float64MultiArray()
         vel_msg.data = [linear_vel, linear_vel, linear_vel, linear_vel]
         self.velocity_publisher.publish(vel_msg)
 
-        # Publish steering command
+        # Publish the scaled and clamped steering command
         steer_msg = Float64MultiArray()
-        steer_msg.data = [steering_angle, steering_angle, 0.0, 0.0]  # Adjust for front steering
+        steer_msg.data = [angular_vel, angular_vel, 0.0, 0.0]
         self.steering_publisher.publish(steer_msg)
-        
-        self.get_logger().info(f"Linear Vel: {linear_vel:.2f}, Angular Vel: {steering_angle:.2f}")
 
+        # Log the processed values
+        self.get_logger().info(f"Mapped Linear Vel: {linear_vel:.2f}, Mapped Angular Vel: {angular_vel:.2f}")
 
 def main(args=None):
     rclpy.init(args=args)
