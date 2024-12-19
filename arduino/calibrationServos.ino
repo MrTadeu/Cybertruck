@@ -6,8 +6,9 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 // 270º porem só vamos usar 35 para um lado + 25 para outro
 // MEIO 277 !!!!!!
-#define SERVOMIN  70//253 // 70 -se fosse 270º 
-#define SERVOMAX  500//332 // 500 -se fosse 270º 
+#define SERVOMID 277
+#define SERVOMIN  250//70//253 // 70 -se fosse 270º 
+#define SERVOMAX  310//500//332 // 500 -se fosse 270º 
 #define USMIN  600 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  2400 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
@@ -55,10 +56,11 @@ void loop() {
     String input = Serial.readStringUntil('\n'); // Lê a linha inteira até encontrar uma quebra de linha
     data = input.toInt();
 
-    // 330 277 240
+    // 330 277 240 - valores sem a barra sao perigosos
+    // 310 277 255 - valores safe
 
     // int pulso = map(data, 0, 270, SERVOMIN, SERVOMAX); // 135
-    int pulso = data; //map(data, -20, 30, SERVOMIN, SERVOMAX); /* -25, 35 */ // 165, 115
+    int pulso = map(data, -20, 20, SERVOMIN, SERVOMAX); /* -25, 35 */ // 165, 115
 
     pwm.setPWM(leftServo, 0, pulso);
     pwm.setPWM(rightServo, 0, pulso + 4);
