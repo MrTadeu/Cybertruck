@@ -21,6 +21,7 @@ hardware_interface::CallbackReturn RobotHardwareInterface::on_init(const hardwar
 
 
   config.device = info.hardware_parameters.at("device");
+  config.device2 = info.hardware_parameters.at("device2"); // for lights
   config.baud_rate = std::stoi(info.hardware_parameters.at("baud_rate"));
   config.timeout_ms = std::stoi(info.hardware_parameters.at("timeout_ms"));
 
@@ -36,6 +37,9 @@ hardware_interface::CallbackReturn RobotHardwareInterface::on_configure(const rc
 
     RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "\t- Connecting to arduino at %s", config.device.c_str());
     arduino_comms.connect(config.device, config.baud_rate, config.timeout_ms);
+
+    RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "\t- Connecting to arduino Lights at %s", config.device2.c_str());
+    arduino_comms2.connect(config.device2, config.baud_rate, config.timeout_ms); // for lights
 
     RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "\033[32mSerial connections established successfully\033[m");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -167,6 +171,24 @@ hardware_interface::return_type RobotHardwareInterface::write(const rclcpp::Time
       arduino_comms.reconnect();
     }
 
+    // Enviar os comandos para outro arduino // for lights
+    if (arduino_comms2.is_connected())
+    {
+      std::stringstream cmd;
+      cmd << std::fixed << std::setprecision(3);
+      cmd << "vel_front " << front_vel_avg
+          << " pos_front " << front_pos_avg
+          << " vel_rear " << rear_vel_avg
+          << " pos_rear " << rear_pos_avg
+          << "\n";
+      arduino_comms2.send_msg(cmd.str());
+
+    }
+    else
+    {
+      arduino_comms2.reconnect();
+    }
+
     // Enviar os comandos para outro arduino
     /* if (arduino_comms2.connected())
     {
@@ -192,6 +214,7 @@ hardware_interface::CallbackReturn RobotHardwareInterface::on_cleanup(const rclc
 {
   // Cleanup resources
   arduino_comms.disconnect();
+  arduino_comms2.disconnect(); // for lights
   RCLCPP_INFO(rclcpp::get_logger("RobotHardwareInterface"), "\033[32mSerial connections closed.\033[m");
   return hardware_interface::CallbackReturn::SUCCESS;
 }

@@ -33,6 +33,7 @@ class RobotHardwareInterface : public hardware_interface::SystemInterface
 
   typedef struct {
     std::string device = "";
+    std::string device2 = ""; // for lights
     int baud_rate = 0;
     int timeout_ms = 0;
   } Config;
@@ -70,6 +71,7 @@ public:
 private:
   Config config;
   ArduinoComms arduino_comms;
+  ArduinoComms arduino_comms2; // for lights
   std::vector<Wheel> wheel_front = {Wheel(), Wheel()};
   std::vector<Wheel> wheel_rear = {Wheel(), Wheel()};
 };

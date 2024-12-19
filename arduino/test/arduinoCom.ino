@@ -43,8 +43,7 @@ void setup()
 {
     // Serial ROS2
     Serial.begin(115200); // 115200 baud
-    while (!Serial)
-        ;
+    while (!Serial);
 
     Serial.println("Arduino pronto para receber comandos via ROS2!");
 }
