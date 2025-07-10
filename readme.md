@@ -86,7 +86,7 @@ Cybertruck/
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/MrTadeu/Cybertruck.git](https://github.com/MrTadeu/Cybertruck.git)
+    git clone https://github.com/MrTadeu/Cybertruck.git
     cd Cybertruck
     ```
 2.  **Install dependencies:**
